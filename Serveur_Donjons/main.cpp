@@ -1,11 +1,11 @@
-#include "fenetrejeu.h"
+#include "serveurcrawler.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FenetreJeu w;
+    ServeurCrawler w;
     w.show();
     return a.exec();
 }

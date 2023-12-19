@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,13 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    fenetrejeu.cpp
+    serveurcrawler.cpp
 
 HEADERS += \
-    fenetrejeu.h
+    serveurcrawler.h
 
 FORMS += \
-    fenetrejeu.ui
+    serveurcrawler.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
