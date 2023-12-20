@@ -43,5 +43,7 @@ private:
     void CreerJoueur(QTcpSocket *client);
 
     int getIndexClient(QTcpSocket *client);
+
+    void envoyerDonneesAll();
 };
 #endif // SERVEUR_H

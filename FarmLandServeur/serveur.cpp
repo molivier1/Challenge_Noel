@@ -12,10 +12,10 @@ Serveur::Serveur(QWidget *parent)
 
 Serveur::~Serveur()
 {
-    foreach(QTcpSocket *clientCourant, listeSocketsClients)
+    foreach(Joueur *joueurCourant, listeJoueurs)
     {
-        clientCourant->close();
-        delete clientCourant;
+        joueurCourant->getSockClient()->close();
+        delete joueurCourant;
     }
 
     delete ui;
@@ -31,7 +31,7 @@ void Serveur::onQTcpServer_newConnection()
     connect(client,&QTcpSocket::readyRead,this,&Serveur::onQTcpSocket_readyRead);
     connect(client,&QTcpSocket::errorOccurred,this,&Serveur::onQTcpSocket_errorOccured);
     // création et ajout du client dans la liste des clients
-    listeSocketsClients.append(client);
+    CreerJoueur(client);
 
     ui->textEditLogs->append("Nouvelle connexion " + client->peerAddress().toString()
                              + ":" + QString::number(client->peerPort()));
@@ -43,6 +43,14 @@ void Serveur::onQTcpSocket_readyRead()
     QChar commande;
 
     QTcpSocket *client = qobject_cast<QTcpSocket *>(sender());
+
+    int index = getIndexClient(client);
+
+    Joueur *joueur = listeJoueurs.at(index);
+
+    QPoint newPos = joueur->getPos();
+
+    QString username;
 
     // Il y a au moins le champs taille d'arrive
     if (client->bytesAvailable() >= (qint64)sizeof(taille))
@@ -56,11 +64,67 @@ void Serveur::onQTcpSocket_readyRead()
             // Lecture de la commande
             in>>commande;
             switch (commande.toLatin1()) {
-            case 'U':
-
+            // Haut
+            case '8':
+                ui->textEditLogs->append(joueur->getUsername() + ": Haut");
+                newPos.setY(newPos.y()-10);
                 break;
 
+                // Bas
+            case '2':
+                ui->textEditLogs->append(joueur->getUsername() + ": Bas");
+                newPos.setY(newPos.y()+10);
+                break;
+
+                // Gauche
+            case '4':
+                ui->textEditLogs->append(joueur->getUsername() + ": Gauche");
+                newPos.setX(newPos.x()-10);
+                break;
+
+                // Droite
+            case '6':
+                ui->textEditLogs->append(joueur->getUsername() + ": Droite");
+                newPos.setX(newPos.x()+10);
+                break;
+
+                // Haut-Gauche
+            case '7':
+                ui->textEditLogs->append(joueur->getUsername() + ": Haut-Gauche");
+                newPos.setX(newPos.x()-10);
+                newPos.setY(newPos.y()-10);
+                break;
+
+                // Bas-Gauche
+            case '1':
+                ui->textEditLogs->append(joueur->getUsername() + ": Bas-Gauche");
+                newPos.setX(newPos.x()-10);
+                newPos.setY(newPos.y()+10);
+                break;
+
+                // Haut-Droit
+            case '9':
+                ui->textEditLogs->append(joueur->getUsername() + ": Haut-Droit");
+                newPos.setX(newPos.x()+10);
+                newPos.setY(newPos.y()-10);
+                break;
+
+                // Bas-Droit
+            case '3':
+                ui->textEditLogs->append(joueur->getUsername() + ": Bas-Droit");
+                newPos.setX(newPos.x()+10);
+                newPos.setY(newPos.y()+10);
+                break;
+
+                // Username
+            case 'u':
+                in>>username;
+                joueur->setUsername(username);
+                ui->textEditLogs->append(username);
+                break;
             }
+            joueur->setPos(newPos);
+            envoyerDonneesAll();
         }
     }
 }
@@ -70,11 +134,11 @@ void Serveur::onQTcpSocket_disconnected()
     // récupérer la socket du client se déconnectant
     QTcpSocket *client=qobject_cast<QTcpSocket *>(sender());
     // récupérer l'index de ce client dans la liste
-    int index= listeSocketsClients.indexOf(client);
+    int index= getIndexClient(client);
     // supprimer le client de la liste
     if (index!=-1)
     {
-        listeSocketsClients.removeAt(index);
+        listeJoueurs.removeAt(index);
     }
     // afficher un message avec l'ip et le port du client deconnecté
     ui->textEditLogs->append("Le client " + client->peerAddress().toString() + ":" +
@@ -85,7 +149,8 @@ void Serveur::onQTcpSocket_errorOccured(QAbstractSocket::SocketError socketError
 {
     QTcpSocket *client = qobject_cast<QTcpSocket * >(sender());
     Q_UNUSED(socketError);
-    ui->textEditLogs->append("Client : " + client->errorString());
+    ui->textEditLogs->append(client->peerAddress().toString() + ":" +
+                             QString::number(client->peerPort()) + client->errorString());
 }
 
 
@@ -141,6 +206,7 @@ void Serveur::CreerJoueur(QTcpSocket *client)
     nouveauJoueur->setPioche(1);
     nouveauJoueur->setHache(1);
     nouveauJoueur->setHoue(1);
+    nouveauJoueur->setPos(QPoint(0, 0));
 
     listeJoueurs.append(nouveauJoueur);
 }
@@ -159,5 +225,43 @@ int Serveur::getIndexClient(QTcpSocket *client)
     }
 
     return -1;
+}
+
+void Serveur::envoyerDonneesAll()
+{
+    quint16 taille;
+    QBuffer tampon;
+    QChar commande = 'a';
+    QList <QPoint> listePosition;
+    int index;
+    // generer la liste de position
+    foreach(Joueur *joueurCourant, listeJoueurs)
+    {
+        listePosition.append(joueurCourant->getPos());
+    }
+
+    foreach(Joueur *joueurCourant, listeJoueurs)
+    {
+        taille = 0;
+        // construction de la trame à envoyer au client
+        tampon.open(QIODevice::WriteOnly);
+        // association du tampon au flux de sortie
+        QDataStream out(&tampon);
+
+        index = listePosition.indexOf(joueurCourant->getPos());
+
+        // construction de la trame
+        out<<taille<<commande<<index<<listePosition;
+        // calcul de la taille de la trame
+        taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
+        // placement sur la premiere position du flux pour pouvoir modifier la taille
+        tampon.seek(0);
+        //modification de la trame avec la taille reel de la trame
+        out << taille;
+        // envoi du QByteArray du tampon via la socket
+        joueurCourant->getSockClient()->write(tampon.buffer());
+
+        tampon.close();
+    }
 }
 

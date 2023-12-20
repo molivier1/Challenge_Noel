@@ -64,3 +64,13 @@ void Joueur::setPos(QPoint newPos)
 {
     pos = newPos;
 }
+
+QString Joueur::getUsername() const
+{
+    return username;
+}
+
+void Joueur::setUsername(QString newUsername)
+{
+    username = newUsername;
+}

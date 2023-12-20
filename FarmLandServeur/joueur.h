@@ -27,6 +27,9 @@ public:
     QPoint getPos() const;
     void setPos(QPoint newPos);
 
+    QString getUsername() const;
+    void setUsername(QString newUsername);
+
 private:
     QTcpSocket *sockClient;
 
@@ -36,6 +39,8 @@ private:
     int houe;
 
     QPoint pos;
+
+    QString username;
 };
 
 #endif // JOUEUR_H
