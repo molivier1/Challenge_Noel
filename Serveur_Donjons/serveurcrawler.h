@@ -11,6 +11,9 @@
 #include <QDateTime>
 #include <QBuffer>
 #include <QThread>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#define TAILLE 40
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ServeurCrawler; }
@@ -32,6 +35,7 @@ private slots:
     void onQTcpSocketErrorOccured(QAbstractSocket::SocketError socketError);
     void EnvoyerDonnees(QTcpSocket* client, QPoint pt, QString msg);
 
+    void AfficherGrille();
 
     void on_pushButtonLancer_clicked();
 
@@ -40,5 +44,7 @@ private:
     QTcpServer *socketEcouteServeur;
     QList<QTcpSocket *> listeSocketClient;
     QList<QPoint> listePositions;
+    QGraphicsRectItem *joueur;
+
 };
 #endif // SERVEURCRAWLER_H

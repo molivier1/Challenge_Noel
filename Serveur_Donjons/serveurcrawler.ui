@@ -80,5 +80,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButtonQuitter</sender>
+   <signal>clicked()</signal>
+   <receiver>ServeurCrawler</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>508</x>
+     <y>528</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>451</x>
+     <y>552</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
