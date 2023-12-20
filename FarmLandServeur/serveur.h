@@ -9,6 +9,7 @@
 #include <QNetworkInterface>
 
 #include "joueur.h"
+#include "inventaire.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serveur; }
@@ -45,5 +46,7 @@ private:
     int getIndexClient(QTcpSocket *client);
 
     void envoyerDonneesAll();
+
+    Inventaire coffreCommun;
 };
 #endif // SERVEUR_H

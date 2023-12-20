@@ -74,3 +74,13 @@ void Joueur::setUsername(QString newUsername)
 {
     username = newUsername;
 }
+
+Inventaire Joueur::getInventaire() const
+{
+    return inventaire;
+}
+
+void Joueur::setInventaire(Inventaire newInventaire)
+{
+    inventaire = newInventaire;
+}

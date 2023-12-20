@@ -4,6 +4,8 @@
 #include <QTcpSocket>
 #include <QPoint>
 
+#include "inventaire.h"
+
 class Joueur
 {
 public:
@@ -30,6 +32,9 @@ public:
     QString getUsername() const;
     void setUsername(QString newUsername);
 
+    Inventaire getInventaire() const;
+    void setInventaire(Inventaire newInventaire);
+
 private:
     QTcpSocket *sockClient;
 
@@ -41,6 +46,8 @@ private:
     QPoint pos;
 
     QString username;
+
+    Inventaire inventaire;
 };
 
 #endif // JOUEUR_H
