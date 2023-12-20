@@ -5,6 +5,11 @@
 #include <QTcpSocket>
 #include <QTcpServer>
 
+#include <QBuffer>
+#include <QNetworkInterface>
+
+#include "joueur.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serveur; }
 QT_END_NAMESPACE
@@ -18,12 +23,25 @@ public:
     ~Serveur();
 
 private slots:
+    void onQTcpServer_newConnection();
+    void onQTcpSocket_readyRead();
+    void onQTcpSocket_disconnected();
+    void onQTcpSocket_errorOccured(QAbstractSocket::SocketError socketError);
 
+    void on_pushButtonLancerServeur_clicked();
 
 private:
     Ui::Serveur *ui;
 
     QList <QTcpSocket *> listeSocketsClients;
-    QTcpServer *socketServeur;
+    QList <Joueur *> listeJoueurs;
+
+    QTcpServer socketServeur;
+
+    void EnvoyerDonnees(QTcpSocket *client);
+
+    void CreerJoueur(QTcpSocket *client);
+
+    int getIndexClient(QTcpSocket *client);
 };
 #endif // SERVEUR_H
