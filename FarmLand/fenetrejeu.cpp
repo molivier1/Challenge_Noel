@@ -40,6 +40,11 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     maScene.addItem(joueur);
     joueur->hide();
     setFocus();
+
+    /*  QGridLayout *layout = new QGridLayout(&window);
+
+    QPixmap image1("")*/
+
 }
 FenetreJeu::~FenetreJeu()
 {
@@ -49,9 +54,6 @@ FenetreJeu::~FenetreJeu()
 
 void FenetreJeu::on_pushButtonNouvelleZone_clicked()
 {
-
-
-
 
     if(ui->pushButtonNouvelleZone->text()== "")
 
@@ -139,6 +141,10 @@ void FenetreJeu::onQTcpSocket_readyRead()
 
                 joueur->setPos(newPos);
                 break;
+            case 'i':
+                in>>coffre;
+                qDebug() << coffre.getBle();
+                break;
             }
         }
     }
@@ -178,7 +184,7 @@ void FenetreJeu::keyPressEvent(QKeyEvent *event)
         EnvoyerCommande('6');
         //joueur->moveBy(5,0);
         qDebug()<<"droit";
-       // if(joueur)
+        // if(joueur)
         break;
     case Qt::Key_8:
         EnvoyerCommande('8');

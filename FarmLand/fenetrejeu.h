@@ -1,6 +1,7 @@
 #ifndef FENETREJEU_H
 #define FENETREJEU_H
 
+#include "inventaire.h"
 #include "qgraphicsview.h"
 #include <QWidget>
 #include <QList>
@@ -46,6 +47,7 @@ private:
     QGraphicsPixmapItem *joueur;
     QGraphicsView zone;
     QTcpSocket *socketFarmLand;
+    Inventaire coffre;
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};
 private slots:
     void onQGraphicsViewPerso_positionSouris(QPoint pos);
