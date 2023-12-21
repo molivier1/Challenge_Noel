@@ -256,7 +256,7 @@
     <string>Chene</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="labelValBle">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -269,7 +269,7 @@
     <string>1000</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="labelValPatate">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -282,7 +282,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="labelValFer">
    <property name="geometry">
     <rect>
      <x>820</x>
@@ -295,7 +295,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="labelValDiamant">
    <property name="geometry">
     <rect>
      <x>560</x>
@@ -308,7 +308,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="labelValSapin">
    <property name="geometry">
     <rect>
      <x>560</x>
@@ -321,7 +321,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="labelValCarotte">
    <property name="geometry">
     <rect>
      <x>650</x>
@@ -334,7 +334,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_7">
+  <widget class="QLabel" name="labelValRoche">
    <property name="geometry">
     <rect>
      <x>650</x>
@@ -347,7 +347,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_8">
+  <widget class="QLabel" name="labelValChene">
    <property name="geometry">
     <rect>
      <x>740</x>
@@ -360,7 +360,7 @@
     <string>50</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
+  <widget class="QLabel" name="labelValBouleau">
    <property name="geometry">
     <rect>
      <x>740</x>

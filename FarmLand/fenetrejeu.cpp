@@ -179,6 +179,8 @@ void FenetreJeu::onQTcpSocket_readyRead()
 
                 newPos = listePosition.at(index);
                 joueur->setPos(newPos);
+
+                actualiserRessources();
                 break;
 
             }
@@ -305,5 +307,18 @@ void FenetreJeu::obtenirCoordonneesCurseur()
 void FenetreJeu::onQGraphicsViewPerso_positionSouris(QPoint pos)
 {
 
+}
+
+void FenetreJeu::actualiserRessources()
+{
+    ui->labelValBle->setText(QString::number(coffre.getBle()));
+    ui->labelValBouleau->setText(QString::number(coffre.getBouleau()));
+    ui->labelValCarotte->setText(QString::number(coffre.getCarotte()));
+    ui->labelValChene->setText(QString::number(coffre.getChene()));
+    ui->labelValDiamant->setText(QString::number(coffre.getDiamant()));
+    ui->labelValFer->setText(QString::number(coffre.getFer()));
+    ui->labelValPatate->setText(QString::number(coffre.getPatate()));
+    ui->labelValRoche->setText(QString::number(coffre.getRoche()));
+    ui->labelValSapin->setText(QString::number(coffre.getSapin()));
 }
 

@@ -53,5 +53,7 @@ private:
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};
     QString message;
 
+    void actualiserRessources();
+
 };
 #endif // FENETREJEU_H
