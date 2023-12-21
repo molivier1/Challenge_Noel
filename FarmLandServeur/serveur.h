@@ -11,6 +11,12 @@
 #include "joueur.h"
 #include "inventaire.h"
 
+#include <QGraphicsScene>
+#include "qgraphicsviewperso.h"
+
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serveur; }
 QT_END_NAMESPACE
@@ -48,5 +54,10 @@ private:
     void envoyerDonneesAll();
 
     Inventaire coffreCommun;
+
+    QGraphicsScene maScene;
+    QGraphicsViewPerso *maVue;
+
+    void checkPositions();
 };
 #endif // SERVEUR_H

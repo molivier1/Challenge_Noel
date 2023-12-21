@@ -12,11 +12,13 @@ SOURCES += \
     inventaire.cpp \
     joueur.cpp \
     main.cpp \
+    qgraphicsviewperso.cpp \
     serveur.cpp
 
 HEADERS += \
     inventaire.h \
     joueur.h \
+    qgraphicsviewperso.h \
     serveur.h
 
 FORMS += \
@@ -26,3 +28,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    Ressources.qrc
+
+DISTFILES +=

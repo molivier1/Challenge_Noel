@@ -8,6 +8,27 @@ Serveur::Serveur(QWidget *parent)
     ui->setupUi(this);
 
     connect(&socketServeur, &QTcpServer::newConnection, this, &Serveur::onQTcpServer_newConnection);
+
+
+    maScene.setSceneRect(0,0,800,462);
+
+    maVue = new QGraphicsViewPerso(this);
+    maVue->setGeometry(10,20,800,462);
+    maVue->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    maVue->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    maVue->fitInView(maScene.sceneRect(),Qt::KeepAspectRatio);
+    maVue->setScene(&maScene);
+    maVue->setStyleSheet("background-position: center;"
+                         "background : no-repeat;"
+                         "background-image: url('../FarmLandServeur/plan.webp')");
+
+    QVBoxLayout *VerticalLayout = new QVBoxLayout(this);
+    VerticalLayout->addWidget(maVue);
+    VerticalLayout->addWidget(ui->pushButtonLancerServeur);
+    VerticalLayout->addWidget(ui->spinBoxPort);
+    VerticalLayout->addWidget(ui->textEditLogs);
+    VerticalLayout->addWidget(ui->pushButtonQuitter);
+    setFocus();
 }
 
 Serveur::~Serveur()
@@ -67,53 +88,53 @@ void Serveur::onQTcpSocket_readyRead()
             // Haut
             case '8':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut");
-                newPos.setY(newPos.y()-10);
+                newPos.setY(newPos.y()-5);
                 break;
 
                 // Bas
             case '2':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas");
-                newPos.setY(newPos.y()+10);
+                newPos.setY(newPos.y()+5);
                 break;
 
                 // Gauche
             case '4':
                 ui->textEditLogs->append(joueur->getUsername() + ": Gauche");
-                newPos.setX(newPos.x()-10);
+                newPos.setX(newPos.x()-5);
                 break;
 
                 // Droite
             case '6':
                 ui->textEditLogs->append(joueur->getUsername() + ": Droite");
-                newPos.setX(newPos.x()+10);
+                newPos.setX(newPos.x()+5);
                 break;
 
                 // Haut-Gauche
             case '7':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut-Gauche");
-                newPos.setX(newPos.x()-10);
-                newPos.setY(newPos.y()-10);
+                newPos.setX(newPos.x()-5);
+                newPos.setY(newPos.y()-5);
                 break;
 
                 // Bas-Gauche
             case '1':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas-Gauche");
-                newPos.setX(newPos.x()-10);
-                newPos.setY(newPos.y()+10);
+                newPos.setX(newPos.x()-5);
+                newPos.setY(newPos.y()+5);
                 break;
 
                 // Haut-Droit
             case '9':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut-Droit");
-                newPos.setX(newPos.x()+10);
-                newPos.setY(newPos.y()-10);
+                newPos.setX(newPos.x()+5);
+                newPos.setY(newPos.y()-5);
                 break;
 
                 // Bas-Droit
             case '3':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas-Droit");
-                newPos.setX(newPos.x()+10);
-                newPos.setY(newPos.y()+10);
+                newPos.setX(newPos.x()+5);
+                newPos.setY(newPos.y()+5);
                 break;
 
                 // Username
@@ -124,6 +145,7 @@ void Serveur::onQTcpSocket_readyRead()
                 break;
             }
             joueur->setPos(newPos);
+            checkPositions();
             envoyerDonneesAll();
         }
     }
@@ -206,7 +228,7 @@ void Serveur::CreerJoueur(QTcpSocket *client)
     nouveauJoueur->setPioche(1);
     nouveauJoueur->setHache(1);
     nouveauJoueur->setHoue(1);
-    nouveauJoueur->setPos(QPoint(0, 0));
+    nouveauJoueur->setPos(QPoint(20, 120));
 
     listeJoueurs.append(nouveauJoueur);
 }
@@ -262,6 +284,23 @@ void Serveur::envoyerDonneesAll()
         joueurCourant->getSockClient()->write(tampon.buffer());
 
         tampon.close();
+    }
+}
+
+void Serveur::checkPositions()
+{
+    foreach(Joueur *joueurCourant, listeJoueurs)
+    {
+        QPoint pos = joueurCourant->getPos();
+        if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 301 && pos.y() >= 301-80)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le blé";
+        }
+
+        if (pos.x() >= 70 && pos.x() <= 70 + 100 && pos.y() <= 302 && pos.y() >= 302-80)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans la roche";
+        }
     }
 }
 

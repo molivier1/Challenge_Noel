@@ -13,42 +13,61 @@
   <property name="windowTitle">
    <string>Serveur</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButtonLancerServeur">
-       <property name="text">
-        <string>Lancer serveur</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QSpinBox" name="spinBoxPort">
-       <property name="minimum">
-        <number>3000</number>
-       </property>
-       <property name="maximum">
-        <number>10000</number>
-       </property>
-       <property name="value">
-        <number>5555</number>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="textEditLogs"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="pushButtonQuitter">
-     <property name="text">
-      <string>Quitter</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QTextEdit" name="textEditLogs">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>230</y>
+     <width>256</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonQuitter">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>430</y>
+     <width>80</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButtonLancerServeur">
+   <property name="geometry">
+    <rect>
+     <x>261</x>
+     <y>171</y>
+     <width>95</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Lancer serveur</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBoxPort">
+   <property name="geometry">
+    <rect>
+     <x>362</x>
+     <y>171</y>
+     <width>64</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>3000</number>
+   </property>
+   <property name="maximum">
+    <number>10000</number>
+   </property>
+   <property name="value">
+    <number>5555</number>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
