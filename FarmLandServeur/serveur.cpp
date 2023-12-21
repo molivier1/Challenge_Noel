@@ -47,7 +47,7 @@ Serveur::Serveur(QWidget *parent)
 
 
     zone2Verif = false;
-    zone3Verif == false;
+    zone3Verif = false;
 }
 
 Serveur::~Serveur()
@@ -207,6 +207,24 @@ void Serveur::onQTcpSocket_readyRead()
                 {
                     coffreCommun.setSapin(coffreCommun.getSapin()+1);
                 }
+                break;
+
+            case 'r':
+                if(zone2Verif == false && coffreCommun.getBle() >= 50 && coffreCommun.getRoche() >= 50)
+                {
+                    coffreCommun.setBle(coffreCommun.getBle()-50);
+                    coffreCommun.setRoche(coffreCommun.getRoche()-50);
+                    zone2Verif = true;
+                }
+
+                if(zone3Verif == false && coffreCommun.getCarotte() >= 50 && coffreCommun.getFer() >= 50)
+                {
+                    coffreCommun.setCarotte(coffreCommun.getCarotte()-50);
+                    coffreCommun.setFer(coffreCommun.getFer()-50);
+                    zone3Verif = true;
+                }
+
+                break;
             }
             if(checkZone(joueur) != -1)
             {
@@ -344,7 +362,8 @@ void Serveur::envoyerDonneesAll()
 
         // construction de la trame
         out<<taille<<commande<<index<<listePosition<<coffreCommun
-          <<checkPositions(joueurCourant)<<messageValide;
+          <<checkPositions(joueurCourant)<<messageValide
+            <<zone2Verif<<zone3Verif;
         // calcul de la taille de la trame
         taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
         // placement sur la premiere position du flux pour pouvoir modifier la taille
