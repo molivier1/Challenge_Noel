@@ -173,6 +173,7 @@ void Serveur::onQTcpSocket_readyRead()
             }
             checkPositions();
             envoyerDonneesAll();
+            envoyerInventaire();
         }
     }
 }
@@ -315,37 +316,71 @@ void Serveur::envoyerDonneesAll()
 
 void Serveur::checkPositions()
 {
+    int valid;
     foreach(Joueur *joueurCourant, listeJoueurs)
     {
+        valid = 0;
         QPoint pos = joueurCourant->getPos();
         if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 245 && pos.y() >= 245-80)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le blé";
+            valid++;
         }
 
         if (pos.x() >= 90 && pos.x() <= 90 + 100 && pos.y() <= 240 && pos.y() >= 240-60)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la roche";
+            valid++;
         }
 
         if (pos.x() >= 225 && pos.x() <= 225 + 85 && pos.y() <= 100 && pos.y() >= 100-60)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le bois de chêne";
+            valid++;
         }
 
         if (pos.x() >= 605 && pos.x() <= 605 + 80 && pos.y() <= 115 && pos.y() >= 115-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la carotte";
+            valid++;
         }
 
         if (pos.x() >= 615 && pos.x() <= 615 + 75 && pos.y() <= 240 && pos.y() >= 240-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le fer";
+            valid++;
         }
 
         if (pos.x() >= 400 && pos.x() <= 400 + 85 && pos.y() <= 115 && pos.y() >= 115-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le bois de bouleau";
+            valid++;
+        }
+
+        if (pos.x() >= 590 && pos.x() <= 590 + 80 && pos.y() <= 377 && pos.y() >= 377-70)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans la patate";
+            valid++;
+        }
+
+        if (pos.x() >= 415 && pos.x() <= 415 + 100 && pos.y() <= 375 && pos.y() >= 375-65)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le diamant";
+            valid++;
+        }
+
+        if (pos.x() >= 232 && pos.x() <= 232 + 85 && pos.y() <= 376 && pos.y() >= 376-70)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le bois de sapin";
+            valid++;
+        }
+
+
+        if(valid == 0)
+        {
+            // Faire truc
+            // faire fonction pour chaque case qui va enable bouton farm chez client
+            // si valid == 0 alors disable chez le joueur
         }
     }
 }
