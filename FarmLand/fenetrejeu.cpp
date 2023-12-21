@@ -6,6 +6,7 @@
 #include <QPoint>
 #include <iostream>
 #include <QTimer>
+#include <QGridLayout>
 
 FenetreJeu::FenetreJeu(QWidget *parent)
     : QWidget(parent)
@@ -41,9 +42,17 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     joueur->hide();
     setFocus();
 
-    /*  QGridLayout *layout = new QGridLayout(&window);
+    QPixmap ble("../FarmLand/ble.png");
+    QPixmap tailleImage = ble.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelBle->setPixmap(tailleImage);
+    ui->labelBle->setFixedSize(20, 20);
 
-    QPixmap image1("")*/
+    QPixmap Carotte("../FarmLand/Carotte.png");
+    QPixmap tailleImage1 = Carotte.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelCarotte->setPixmap(tailleImage1);
+    ui->labelCarotte->setFixedSize(20, 20);
+
+
 
 }
 FenetreJeu::~FenetreJeu()
@@ -114,7 +123,8 @@ void FenetreJeu::onQTcpSocket_readyRead()
 {
     quint16 taille = 0;
     QChar commande;
-
+    QString message;
+    bool valide;
     int index;
     QPoint newPos;
     QString username;
@@ -145,6 +155,11 @@ void FenetreJeu::onQTcpSocket_readyRead()
                 in>>coffre;
                 qDebug() << coffre.getBle();
                 break;
+
+           /* case'f':
+                in >> valide >> message;
+                qDebug() << valide << message;
+                break;*/
             }
         }
     }
@@ -171,8 +186,7 @@ void FenetreJeu::EnvoyerCommande(QChar commande)
 
 void FenetreJeu::keyPressEvent(QKeyEvent *event)
 {
-    const QPoint zone1(92,313);
-    const QPoint zone2(414, 313);
+
     switch ( event->key() )
     {
     case Qt::Key_4:

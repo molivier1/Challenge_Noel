@@ -54,8 +54,8 @@
   <widget class="QLabel" name="labelNouvelleZone">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>500</y>
+     <x>470</x>
+     <y>520</y>
      <width>271</width>
      <height>61</height>
     </rect>
@@ -139,16 +139,122 @@
     <string>Prénom</string>
    </property>
   </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
+  <widget class="QLabel" name="labelBle">
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>479</y>
-     <width>221</width>
-     <height>111</height>
+     <y>500</y>
+     <width>31</width>
+     <height>31</height>
     </rect>
    </property>
-   <layout class="QGridLayout" name="gridLayout"/>
+   <property name="text">
+    <string>Ble</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelCarotte">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>510</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Carotte</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelRoche">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>510</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Roche</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelFer">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>510</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Fer</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelBouleau">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>550</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Bouleau</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelSapin">
+   <property name="geometry">
+    <rect>
+     <x>590</x>
+     <y>550</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sapin</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDiamant">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>550</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Diamant</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelPatate">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>550</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Patate</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelChene">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>510</y>
+     <width>58</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Chene</string>
+   </property>
   </widget>
  </widget>
  <resources/>
