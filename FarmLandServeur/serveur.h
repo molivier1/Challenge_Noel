@@ -58,15 +58,13 @@ private:
     QGraphicsScene maScene;
     QGraphicsViewPerso *maVue;
 
-    void checkPositions();
+    bool checkPositions(Joueur *joueur);
 
     int checkZone(Joueur *joueur);
 
     bool zone2Verif;
     bool zone3Verif;
 
-    void envoyerInventaire();
-
-    void envoyerValidFarm(QTcpSocket *client, bool valid, QString message);
+    QString messageValide;
 };
 #endif // SERVEUR_H

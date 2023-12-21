@@ -90,8 +90,6 @@ void Serveur::onQTcpSocket_readyRead()
 
     QPoint newPos = joueur->getPos();
 
-    QString username;
-
     QString message;
 
     // Il y a au moins le champs taille d'arrive
@@ -104,7 +102,7 @@ void Serveur::onQTcpSocket_readyRead()
         if (client->bytesAvailable() >= (qint64)taille)
         {
             // Lecture de la commande
-            in>>commande;
+            in>>commande>>message;
             switch (commande.toLatin1()) {
             // Haut
             case '8':
@@ -160,14 +158,11 @@ void Serveur::onQTcpSocket_readyRead()
 
                 // Username
             case 'u':
-                in>>username;
-                joueur->setUsername(username);
-                ui->textEditLogs->append(username);
+                joueur->setUsername(message);
+                ui->textEditLogs->append(message);
                 break;
 
             case 'f':
-                in >> message;
-
                 if(message == "ble")
                 {
                     coffreCommun.setBle(coffreCommun.getBle()+1);
@@ -221,9 +216,7 @@ void Serveur::onQTcpSocket_readyRead()
             {
                 //joueur->setPos(QPoint(20, 120));
             }
-            checkPositions();
             envoyerDonneesAll();
-            envoyerInventaire();
         }
     }
 }
@@ -350,7 +343,8 @@ void Serveur::envoyerDonneesAll()
         index = listePosition.indexOf(joueurCourant->getPos());
 
         // construction de la trame
-        out<<taille<<commande<<index<<listePosition;
+        out<<taille<<commande<<index<<listePosition<<coffreCommun
+          <<checkPositions(joueurCourant)<<messageValide;
         // calcul de la taille de la trame
         taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
         // placement sur la premiere position du flux pour pouvoir modifier la taille
@@ -364,102 +358,99 @@ void Serveur::envoyerDonneesAll()
     }
 }
 
-void Serveur::checkPositions()
+bool Serveur::checkPositions(Joueur *joueur)
 {
-    int valid;
-    QString message;
-    foreach(Joueur *joueurCourant, listeJoueurs)
+    int valid = 0;
+    messageValide = "no";
+
+    QPoint pos = joueur->getPos();
+    //Commande -> f
+    // ble
+    if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 245 && pos.y() >= 245-80)
     {
-        valid = 0;
-        message = "no";
-        QPoint pos = joueurCourant->getPos();
-        //Commande -> f
-        // ble
-        if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 245 && pos.y() >= 245-80)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le blé";
-            message = "ble";
-            valid++;
-        }
+        qDebug() << joueur->getUsername() << " est dans le blé";
+        messageValide = "ble";
+        valid++;
+    }
 
-        // roche
-        if (pos.x() >= 90 && pos.x() <= 90 + 100 && pos.y() <= 240 && pos.y() >= 240-60)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans la roche";
-            message = "roche";
-            valid++;
-        }
+    // roche
+    if (pos.x() >= 90 && pos.x() <= 90 + 100 && pos.y() <= 240 && pos.y() >= 240-60)
+    {
+        qDebug() << joueur->getUsername() << " est dans la roche";
+        messageValide = "roche";
+        valid++;
+    }
 
-        // chene
-        if (pos.x() >= 225 && pos.x() <= 225 + 85 && pos.y() <= 100 && pos.y() >= 100-60)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le bois de chêne";
-            message = "chene";
-            valid++;
-        }
+    // chene
+    if (pos.x() >= 225 && pos.x() <= 225 + 85 && pos.y() <= 100 && pos.y() >= 100-60)
+    {
+        qDebug() << joueur->getUsername() << " est dans le bois de chêne";
+        messageValide = "chene";
+        valid++;
+    }
 
-        // carotte
-        if (pos.x() >= 605 && pos.x() <= 605 + 80 && pos.y() <= 115 && pos.y() >= 115-70)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans la carotte";
-            message = "carotte";
-            valid++;
-        }
+    // carotte
+    if (pos.x() >= 605 && pos.x() <= 605 + 80 && pos.y() <= 115 && pos.y() >= 115-70)
+    {
+        qDebug() << joueur->getUsername() << " est dans la carotte";
+        messageValide = "carotte";
+        valid++;
+    }
 
-        // fer
-        if (pos.x() >= 615 && pos.x() <= 615 + 75 && pos.y() <= 240 && pos.y() >= 240-70)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le fer";
-            message = "fer";
-            valid++;
-        }
+    // fer
+    if (pos.x() >= 615 && pos.x() <= 615 + 75 && pos.y() <= 240 && pos.y() >= 240-70)
+    {
+        qDebug() << joueur->getUsername() << " est dans le fer";
+        messageValide = "fer";
+        valid++;
+    }
 
-        // bouleau
-        if (pos.x() >= 400 && pos.x() <= 400 + 85 && pos.y() <= 115 && pos.y() >= 115-70)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le bois de bouleau";
-            message = "bouleau";
-            valid++;
-        }
+    // bouleau
+    if (pos.x() >= 400 && pos.x() <= 400 + 85 && pos.y() <= 115 && pos.y() >= 115-70)
+    {
+        qDebug() << joueur->getUsername() << " est dans le bois de bouleau";
+        messageValide = "bouleau";
+        valid++;
+    }
 
-        // patate
-        if (pos.x() >= 590 && pos.x() <= 590 + 80 && pos.y() <= 377 && pos.y() >= 377-70)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans la patate";
-            message = "patate";
-            valid++;
-        }
+    // patate
+    if (pos.x() >= 590 && pos.x() <= 590 + 80 && pos.y() <= 377 && pos.y() >= 377-70)
+    {
+        qDebug() << joueur->getUsername() << " est dans la patate";
+        messageValide = "patate";
+        valid++;
+    }
 
-        // diamant
-        if (pos.x() >= 415 && pos.x() <= 415 + 100 && pos.y() <= 375 && pos.y() >= 375-65)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le diamant";
-            message = "diamant";
-            valid++;
-        }
+    // diamant
+    if (pos.x() >= 415 && pos.x() <= 415 + 100 && pos.y() <= 375 && pos.y() >= 375-65)
+    {
+        qDebug() << joueur->getUsername() << " est dans le diamant";
+        messageValide = "diamant";
+        valid++;
+    }
 
-        // sapin
-        if (pos.x() >= 232 && pos.x() <= 232 + 85 && pos.y() <= 376 && pos.y() >= 376-70)
-        {
-            qDebug() << joueurCourant->getUsername() << " est dans le bois de sapin";
-            message = "sapin";
-            valid++;
-        }
+    // sapin
+    if (pos.x() >= 232 && pos.x() <= 232 + 85 && pos.y() <= 376 && pos.y() >= 376-70)
+    {
+        qDebug() << joueur->getUsername() << " est dans le bois de sapin";
+        messageValide = "sapin";
+        valid++;
+    }
 
 
-        if(valid == 0)
-        {
-            // Faire truc
-            // faire fonction pour chaque case qui va enable bouton farm chez client
-            // si valid == 0 alors disable chez le joueur
-            envoyerValidFarm(joueurCourant->getSockClient(), false, message);
-        }
-        else
-        {
-            envoyerValidFarm(joueurCourant->getSockClient(), true, message);
-        }
+    if(valid == 0)
+    {
+        // Faire truc
+        // faire fonction pour chaque case qui va enable bouton farm chez client
+        // si valid == 0 alors disable chez le joueur
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
+
 
 int Serveur::checkZone(Joueur *joueur)
 {
@@ -502,7 +493,7 @@ int Serveur::checkZone(Joueur *joueur)
         return -1;
     }
 
-    if (zone3Verif == false && pos.y() >= 313 || zone3Verif == false && pos.y()+70 >= 313)
+    if ((zone3Verif == false && pos.y() >= 313) || (zone3Verif == false && pos.y()+70 >= 313))
     {
         pos.setY(pos.y()-20);
         joueur->setPos(pos);
@@ -511,54 +502,3 @@ int Serveur::checkZone(Joueur *joueur)
 
     return 0;
 }
-
-void Serveur::envoyerInventaire()
-{
-    quint16 taille;
-    QBuffer tampon;
-    QChar commande = 'i';
-    // generer la liste de position
-    foreach(Joueur *joueurCourant, listeJoueurs)
-    {
-        taille = 0;
-        // construction de la trame à envoyer au client
-        tampon.open(QIODevice::WriteOnly);
-        // association du tampon au flux de sortie
-        QDataStream out(&tampon);
-
-        // construction de la trame
-        out<<taille<<commande<<coffreCommun;
-        // calcul de la taille de la trame
-        taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
-        // placement sur la premiere position du flux pour pouvoir modifier la taille
-        tampon.seek(0);
-        //modification de la trame avec la taille reel de la trame
-        out << taille;
-        // envoi du QByteArray du tampon via la socket
-        joueurCourant->getSockClient()->write(tampon.buffer());
-
-        tampon.close();
-    }
-}
-
-void Serveur::envoyerValidFarm(QTcpSocket *client, bool valid, QString message)
-{
-    quint16 taille=0;
-    QBuffer tampon;
-    QChar commande = 'f';
-    // construction de la trame à envoyer au client
-    tampon.open(QIODevice::WriteOnly);
-    // association du tampon au flux de sortie
-    QDataStream out(&tampon);
-    // construction de la trame
-    out<<taille<<commande<<valid<<message;
-    // calcul de la taille de la trame
-    taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
-    // placement sur la premiere position du flux pour pouvoir modifier la taille
-    tampon.seek(0);
-    //modification de la trame avec la taille reel de la trame
-    out << taille;
-    // envoi du QByteArray du tampon via la socket
-    client->write(tampon.buffer());
-}
-
