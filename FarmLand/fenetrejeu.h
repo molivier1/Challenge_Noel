@@ -39,6 +39,8 @@ private slots:
 
     void obtenirCoordonneesCurseur();
 
+    void onQGraphicsViewPerso_positionSouris(QPoint pos);
+
 private:
     Ui::FenetreJeu *ui;
     int zoneCommune;
@@ -49,7 +51,7 @@ private:
     QTcpSocket *socketFarmLand;
     Inventaire coffre;
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};
-private slots:
-    void onQGraphicsViewPerso_positionSouris(QPoint pos);
+    QString message;
+
 };
 #endif // FENETREJEU_H

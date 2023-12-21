@@ -43,14 +43,40 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     setFocus();
 
     QPixmap ble("../FarmLand/ble.png");
-    QPixmap tailleImage = ble.scaled(QSize(30, 30), Qt::KeepAspectRatio);
-    ui->labelBle->setPixmap(tailleImage);
-    ui->labelBle->setFixedSize(20, 20);
+    QPixmap tailleImageBle = ble.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelBle->setPixmap(tailleImageBle);
 
     QPixmap Carotte("../FarmLand/Carotte.png");
-    QPixmap tailleImage1 = Carotte.scaled(QSize(30, 30), Qt::KeepAspectRatio);
-    ui->labelCarotte->setPixmap(tailleImage1);
-    ui->labelCarotte->setFixedSize(20, 20);
+    QPixmap tailleImageCarotte = Carotte.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelCarotte->setPixmap(tailleImageCarotte);
+
+    QPixmap patate("../FarmLand/patate.png");
+    QPixmap tailleImagePatate= patate.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelPatate->setPixmap(tailleImagePatate);
+
+    QPixmap BucheSapin("../FarmLand/bucheSapin.png");
+    QPixmap tailleImageBuche = BucheSapin.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelSapin->setPixmap(tailleImageBuche);
+
+    QPixmap bucheBouleau("../FarmLand/bucheBouleau.png");
+    QPixmap tailleImageBucheBouleau = bucheBouleau.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelBouleau->setPixmap(tailleImageBucheBouleau);
+
+    QPixmap bucheChene("../FarmLand/BucheChene.png");
+    QPixmap tailleImageBucheChene= bucheChene.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelChene->setPixmap(tailleImageBucheChene);
+
+    QPixmap fer("../FarmLand/fer.png");
+    QPixmap tailleImageFer = fer.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelFer->setPixmap(tailleImageFer);
+
+    QPixmap Roche("../FarmLand/Roche.png");
+    QPixmap tailleImageRoche = Roche.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelRoche->setPixmap(tailleImageRoche);
+
+    QPixmap Diamant("../FarmLand/diamant.png");
+    QPixmap tailleImageDiamant = Diamant.scaled(QSize(30, 30), Qt::KeepAspectRatio);
+    ui->labelDiamant->setPixmap(tailleImageDiamant);
 
 
 
@@ -123,11 +149,11 @@ void FenetreJeu::onQTcpSocket_readyRead()
 {
     quint16 taille = 0;
     QChar commande;
-    QString message;
     bool valide;
     int index;
     QPoint newPos;
     QString username;
+    Inventaire nouveauCoffre;
 
     QList <QPoint> listePosition;
 
@@ -145,21 +171,16 @@ void FenetreJeu::onQTcpSocket_readyRead()
             switch (commande.toLatin1()) {
             // Haut
             case 'a':
-                in>>index>>listePosition;
+                in>>index>>listePosition >> nouveauCoffre>>valide>>message;
                 qDebug() << index << " + " << listePosition.at(index);
-                newPos = listePosition.at(index);
+                qDebug() << valide << message;
 
+                coffre = nouveauCoffre;
+
+                newPos = listePosition.at(index);
                 joueur->setPos(newPos);
                 break;
-            case 'i':
-                in>>coffre;
-                qDebug() << coffre.getBle();
-                break;
 
-           /* case'f':
-                in >> valide >> message;
-                qDebug() << valide << message;
-                break;*/
             }
         }
     }
@@ -173,7 +194,7 @@ void FenetreJeu::EnvoyerCommande(QChar commande)
     // association du tampon au flux de sortie
     QDataStream out(&tampon);
     // construction de la trame
-    out<<taille<<commande;
+    out<<taille<<commande<<message;
     // calcul de la taille de la trame
     taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
     // placement sur la premiere position du flux pour pouvoir modifier la taille
@@ -229,6 +250,11 @@ void FenetreJeu::keyPressEvent(QKeyEvent *event)
         EnvoyerCommande('3');
         //joueur->moveBy(5,-5);
         qDebug()<<"DiagonaleBasDroite";
+        break;
+
+    case Qt::Key_F:
+        EnvoyerCommande('f');
+        qDebug() << "Touche farm pressé";
         break;
     }
 }
