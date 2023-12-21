@@ -59,5 +59,12 @@ private:
     QGraphicsViewPerso *maVue;
 
     void checkPositions();
+
+    int checkZone(Joueur *joueur);
+
+    bool zone2Verif;
+    bool zone3Verif;
+
+    void envoyerInventaire();
 };
 #endif // SERVEUR_H

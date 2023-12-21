@@ -1,6 +1,6 @@
 #ifndef INVENTAIRE_H
 #define INVENTAIRE_H
-
+#include <QDataStream>
 class Inventaire
 {
 public:
@@ -32,6 +32,15 @@ public:
 
     int getSapin() const;
     void setSapin(int newSapin);
+    friend QDataStream& operator>>(QDataStream& in, Inventaire& v) {
+        in >> v.ble >> v.roche >> v.chene >> v.carotte >> v.fer >> v.bouleau >> v.patate >> v.diamant >> v.sapin;
+        return in;
+    }
+
+    friend QDataStream& operator<<(QDataStream& out, const Inventaire& v) {
+        out << v.ble << v.roche << v.chene << v.carotte << v.fer << v.bouleau << v.patate << v.diamant << v.sapin;
+        return out;
+    }
 
 private:
     int ble;

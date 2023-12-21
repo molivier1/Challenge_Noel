@@ -29,6 +29,25 @@ Serveur::Serveur(QWidget *parent)
     VerticalLayout->addWidget(ui->textEditLogs);
     VerticalLayout->addWidget(ui->pushButtonQuitter);
     setFocus();
+
+    QPolygon zone2;
+    zone2.setPoints(4,
+                    414, 45,
+                    737, 45,
+                    737, 313,
+                    414, 313);
+
+    QGraphicsPolygonItem *zone2Item = new QGraphicsPolygonItem(zone2);
+
+    QPen contour(Qt::black);
+    contour.setWidth(2);
+    zone2Item->setPen(contour);
+
+    maScene.addItem(zone2Item);
+
+
+    zone2Verif = false;
+    zone3Verif == false;
 }
 
 Serveur::~Serveur()
@@ -144,7 +163,14 @@ void Serveur::onQTcpSocket_readyRead()
                 ui->textEditLogs->append(username);
                 break;
             }
-            joueur->setPos(newPos);
+            if(checkZone(joueur) != -1)
+            {
+                joueur->setPos(newPos);
+            }
+            else
+            {
+                //joueur->setPos(QPoint(20, 120));
+            }
             checkPositions();
             envoyerDonneesAll();
         }
@@ -292,15 +318,115 @@ void Serveur::checkPositions()
     foreach(Joueur *joueurCourant, listeJoueurs)
     {
         QPoint pos = joueurCourant->getPos();
-        if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 301 && pos.y() >= 301-80)
+        if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 245 && pos.y() >= 245-80)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le blé";
         }
 
-        if (pos.x() >= 70 && pos.x() <= 70 + 100 && pos.y() <= 302 && pos.y() >= 302-80)
+        if (pos.x() >= 90 && pos.x() <= 90 + 100 && pos.y() <= 240 && pos.y() >= 240-60)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la roche";
         }
+
+        if (pos.x() >= 225 && pos.x() <= 225 + 85 && pos.y() <= 100 && pos.y() >= 100-60)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le bois de chêne";
+        }
+
+        if (pos.x() >= 605 && pos.x() <= 605 + 80 && pos.y() <= 115 && pos.y() >= 115-70)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans la carotte";
+        }
+
+        if (pos.x() >= 615 && pos.x() <= 615 + 75 && pos.y() <= 240 && pos.y() >= 240-70)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le fer";
+        }
+
+        if (pos.x() >= 400 && pos.x() <= 400 + 85 && pos.y() <= 115 && pos.y() >= 115-70)
+        {
+            qDebug() << joueurCourant->getUsername() << " est dans le bois de bouleau";
+        }
+    }
+}
+
+int Serveur::checkZone(Joueur *joueur)
+{
+    QPoint pos = joueur->getPos();
+    // Top
+    if(pos.y() <= 46)
+    {
+        pos.setY(pos.y()+20);
+        joueur->setPos(pos);
+        return -1;
+    }
+    // Bottom
+    if(pos.y()+70 >= 448)
+    {
+        pos.setY(pos.y()-20);
+        joueur->setPos(pos);
+        return -1;
+    }
+    // Left
+    if(pos.x() <= 0)
+    {
+        pos.setX(pos.x()+20);
+        joueur->setPos(pos);
+        return -1;
+    }
+    // Right
+    if(pos.x()+40 >= 738)
+    {
+        pos.setX(pos.x()-20);
+        joueur->setPos(pos);
+        return -1;
+    }
+
+    // Zone 2
+    //if (pos.x() >= 414 && pos.x() <= 737 && pos.y() >= 45 && pos.y() <= 313)
+    if (zone2Verif == false && pos.x() >= 414 || zone2Verif == false && pos.x()+40 >= 414)
+    {
+        pos.setX(pos.x()-20);
+        joueur->setPos(pos);
+        return -1;
+    }
+
+    if (zone3Verif == false && pos.y() >= 313 || zone3Verif == false && pos.y()+70 >= 313)
+    {
+        pos.setY(pos.y()-20);
+        joueur->setPos(pos);
+        return -1;
+    }
+
+    return 0;
+}
+
+void Serveur::envoyerInventaire()
+{
+    quint16 taille;
+    QBuffer tampon;
+    QChar commande = 'i';
+    // generer la liste de position
+    foreach(Joueur *joueurCourant, listeJoueurs)
+    {
+        taille = 0;
+        // construction de la trame à envoyer au client
+        tampon.open(QIODevice::WriteOnly);
+        // association du tampon au flux de sortie
+        QDataStream out(&tampon);
+
+        // construction de la trame
+        out<<taille<<commande<<coffreCommun;
+        // calcul de la taille de la trame
+        taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
+        // placement sur la premiere position du flux pour pouvoir modifier la taille
+        tampon.seek(0);
+        //modification de la trame avec la taille reel de la trame
+        out << taille;
+        // envoi du QByteArray du tampon via la socket
+        joueurCourant->getSockClient()->write(tampon.buffer());
+
+        tampon.close();
     }
 }
 
