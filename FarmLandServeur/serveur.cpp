@@ -170,7 +170,47 @@ void Serveur::onQTcpSocket_readyRead()
 
                 if(message == "ble")
                 {
+                    coffreCommun.setBle(coffreCommun.getBle()+1);
+                }
 
+                if(message == "roche")
+                {
+                    coffreCommun.setRoche(coffreCommun.getRoche()+1);
+                }
+
+                if(message == "chene")
+                {
+                    coffreCommun.setChene(coffreCommun.getChene()+1);
+                }
+
+                if(message == "carotte")
+                {
+                    coffreCommun.setCarotte(coffreCommun.getCarotte()+1);
+                }
+
+                if(message == "fer")
+                {
+                    coffreCommun.setFer(coffreCommun.getFer()+1);
+                }
+
+                if(message == "bouleau")
+                {
+                    coffreCommun.setBouleau(coffreCommun.getBouleau()+1);
+                }
+
+                if(message == "patate")
+                {
+                    coffreCommun.setPatate(coffreCommun.getPatate()+1);
+                }
+
+                if(message == "diamant")
+                {
+                    coffreCommun.setDiamant(coffreCommun.getDiamant()+1);
+                }
+
+                if(message == "sapin")
+                {
+                    coffreCommun.setSapin(coffreCommun.getSapin()+1);
                 }
             }
             if(checkZone(joueur) != -1)
