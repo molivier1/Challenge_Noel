@@ -43,7 +43,7 @@ private:
     int zoneCommune;
     QGraphicsScene maScene;
     QGraphicsViewPerso *maVue;
-    QGraphicsRectItem *rectangle;
+    QGraphicsPixmapItem *joueur;
     QGraphicsView zone;
     QTcpSocket *socketFarmLand;
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};

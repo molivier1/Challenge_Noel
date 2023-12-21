@@ -10,12 +10,14 @@ CONFIG += c++17
 
 SOURCES += \
     QGraphicsViewPerso.cpp \
+    inventaire.cpp \
     main.cpp \
     fenetrejeu.cpp
 
 HEADERS += \
     QGraphicsViewPerso.h \
-    fenetrejeu.h
+    fenetrejeu.h \
+    inventaire.h
 
 FORMS += \
     fenetrejeu.ui

@@ -1,5 +1,6 @@
 #include "fenetrejeu.h"
 #include "ui_fenetrejeu.h"
+#include "inventaire.h"
 #include <QMessageBox>
 #include <QCursor>
 #include <QPoint>
@@ -21,10 +22,6 @@ FenetreJeu::FenetreJeu(QWidget *parent)
                                               "background : no-repeat;"
                                               "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Images/images.jpg')");
 
-  /*  ui->graphicsView->setStyleSheet("background-position: center;"
-                                    "background : no-repeat;"
-                                    "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/plan.webp')");
-*/
     maScene.setSceneRect(0,0,800,462);
 
     maVue = new QGraphicsViewPerso(this);
@@ -37,6 +34,11 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     maVue->setStyleSheet("background-position: center;"
                          "background : no-repeat;"
                          "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/plan.webp')");
+
+    joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/candy.png"));
+    joueur->setScale(0.25);
+    maScene.addItem(joueur);
+    joueur->hide();
     setFocus();
 }
 FenetreJeu::~FenetreJeu()
@@ -48,7 +50,8 @@ FenetreJeu::~FenetreJeu()
 void FenetreJeu::on_pushButtonNouvelleZone_clicked()
 {
 
-    zoneCommune = 0;
+
+
 
     if(ui->pushButtonNouvelleZone->text()== "")
 
@@ -93,6 +96,8 @@ void FenetreJeu::onQTcpSocket_connected()
     out<<taille;
     // envoi du QByteArray du tampon via la socket
     socketFarmLand->write(tampon.buffer());
+
+    joueur->show();
 }
 
 void FenetreJeu::onQTcpSocket_disconnected()
@@ -105,13 +110,37 @@ void FenetreJeu::onQTcpSocket_disconnected()
 
 void FenetreJeu::onQTcpSocket_readyRead()
 {
-    quint16 taille=0;
+    quint16 taille = 0;
     QChar commande;
+
+    int index;
+    QPoint newPos;
+    QString username;
+
+    QList <QPoint> listePosition;
+
     // Il y a au moins le champs taille d'arrive
     if (socketFarmLand->bytesAvailable() >= (qint64)sizeof(taille))
     {
-        //if()
+        // Lecture de la taille de la trame
+        QDataStream in(socketFarmLand);
+        in >> taille;
+        // Le reste de la trame est disponible
+        if (socketFarmLand->bytesAvailable() >= (qint64)taille)
+        {
+            // Lecture de la commande
+            in>>commande;
+            switch (commande.toLatin1()) {
+            // Haut
+            case 'a':
+                in>>index>>listePosition;
+                qDebug() << index << " + " << listePosition.at(index);
+                newPos = listePosition.at(index);
 
+                joueur->setPos(newPos);
+                break;
+            }
+        }
     }
 }
 
@@ -136,39 +165,49 @@ void FenetreJeu::EnvoyerCommande(QChar commande)
 
 void FenetreJeu::keyPressEvent(QKeyEvent *event)
 {
+    const QPoint zone1(92,313);
+    const QPoint zone2(414, 313);
     switch ( event->key() )
     {
     case Qt::Key_4:
         EnvoyerCommande('4');
+        //joueur->moveBy(-5,0);
         qDebug()<<"gauche";
         break;
     case Qt::Key_6:
         EnvoyerCommande('6');
+        //joueur->moveBy(5,0);
         qDebug()<<"droit";
+       // if(joueur)
         break;
     case Qt::Key_8:
         EnvoyerCommande('8');
+        //joueur->moveBy(0,-5);
         qDebug()<<"haut";
         break;
     case Qt::Key_2:
         EnvoyerCommande('2');
+        //joueur->moveBy(0,5);
         qDebug()<<"bas";
         break;
     case Qt::Key_7:
         EnvoyerCommande('7');
+        //joueur->moveBy(-5,5);
         qDebug()<<"DiagonaleHautGauche";
         break;
     case Qt::Key_9:
         EnvoyerCommande('9');
+        //joueur->moveBy(5,5);
         qDebug()<<"DiagonaleHautDroite";
-
         break;
     case Qt::Key_1:
         EnvoyerCommande('1');
+        //joueur->moveBy(-5,-5);
         qDebug()<<"DiagonaleBasGauche";
         break;
     case Qt::Key_3:
         EnvoyerCommande('3');
+        //joueur->moveBy(5,-5);
         qDebug()<<"DiagonaleBasDroite";
         break;
     }
