@@ -68,16 +68,6 @@
     <string>Port d'écoute</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>20</y>
-     <width>491</width>
-     <height>461</height>
-    </rect>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections>

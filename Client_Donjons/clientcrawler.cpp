@@ -3,7 +3,8 @@
 
 ClientCrawler::ClientCrawler(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::ClientCrawler)
+    , ui(new Ui::ClientCrawler),
+      grille(new QGridLayout(this))
 {
     ui->setupUi(this);
     socketClient = new QTcpSocket(this);
@@ -12,12 +13,25 @@ ClientCrawler::ClientCrawler(QWidget *parent)
     connect(socketClient, &QTcpSocket::readyRead, this, &ClientCrawler::onQTcpSocketReadyRead);
     connect(socketClient, &QTcpSocket::errorOccurred, this, &ClientCrawler::onQTcpSocketErrorOccured);
 
-    scene.setSceneRect(0,0,531,431);
-    ui->vue->fitInView(scene.sceneRect(),Qt::KeepAspectRatio);
-    ui->vue->setScene(&scene);
-    joueur = new QGraphicsRectItem(0,0,20,20);
-    QBrush interieurRec(Qt::red);
-    joueur->setBrush(interieurRec);
+    scene=new QGraphicsScene();
+    vue = new QGraphicsView(this);
+    scene->setSceneRect(0,0,800,462);
+    setWindowState(Qt::WindowMaximized);
+    vue->setGeometry(0,0,800,462);
+    vue->fitInView(scene->sceneRect());
+    vue->setScene(scene);
+    vue->setWindowState(Qt::WindowMaximized);
+    vue->show();
+    grille->addWidget(vue);
+    grille->addWidget(ui->labelAdresseServeur,TAILLE,0,1,5);
+    grille->addWidget(ui->labelNumeroPort,TAILLE,6,1,5);
+    grille->addWidget(ui->lineEditAdresseServeur,TAILLE+1,0,1,5);
+    grille->addWidget(ui->spinBoxPortServeur,TAILLE+1,6,1,5);
+    grille->addWidget(ui->pushButtonConnexion,TAILLE+2,0,1,5);
+    grille->addWidget(ui->pushButtonQuitter,TAILLE+2,6,1,5);
+    vue->setFocus();
+
+
 }
 ClientCrawler::~ClientCrawler()
 {
@@ -31,9 +45,7 @@ ClientCrawler::~ClientCrawler()
 
 void ClientCrawler::onQTcpSocketReadyRead()
 {
-    QPoint pos;
-    int x = 0;
-    int y = 0;
+
     quint16 taille=0;
     QString message;
     double distance;
@@ -44,35 +56,24 @@ void ClientCrawler::onQTcpSocketReadyRead()
     {
         // Lecture de la taille de la trame
         QDataStream in(socketClient);
+        in >> taille;
         // Le reste de la trame est disponible
         if (socketClient->bytesAvailable() >= (qint64)taille)
         {
-            in>>taille>>pos>>message>>distance;
-            x=pos.x();
-            y=pos.y();
-            // Lecture de la commande
-            if(message=="start"){
-                scene.addItem(joueur);
-            }
-            if(message=="vide"){
-                /*grille->itemAtPosition(y,x)->widget()->setStyleSheet("background-color : black");
-                ui->labelInformations->setText(message);
-                ui->labelInformations->setStyleSheet("color : black")*/;
-            }
-            if(message=="collision"){
-                /*grille->itemAtPosition(y,x)->widget()->setStyleSheet("background-color : magenta");
-                ui->labelInformations->setText(message);
-                ui->labelInformations->setStyleSheet("color : magenta")*/;
-            }
-            if(QPoint(-1,1)==pos){
-//                if(message.contains("victoire de " + socketClient->peerAddress().toString())){
-//                    ui->labelInformations->setText(message);
-//                    ui->labelInformations->setStyleSheet("color : green");
-//                } else{
-//                    ui->labelInformations->setText(message);
-//                    ui->labelInformations->setStyleSheet("color : red");
-//                }
-
+            in>>position>>message>>distance;
+            ViderGrille();
+            if(position != QPoint(-1,-1)){
+                QGraphicsPixmapItem *recPerso = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tsoulaimana/Qt/Snir 3 C++/Projet Noel/Projet_Noel2022/cam.jpg"));
+                recPerso->setPos(position);
+                recPerso->setScale(0.25);
+                //for (int x = 10; x<500; x+=20){
+                boule=new QGraphicsBouleHorizontalItem(0,0,21,21);
+                //boule->setPos(x+20,50-x());
+                boule->setPos(20,50);
+                //position de la boule
+                scene->addItem(boule);
+                //}
+                scene->addItem(recPerso);
             }
         }
     }
@@ -112,24 +113,24 @@ void ClientCrawler::on_pushButtonConnexion_clicked()
 void ClientCrawler::keyPressEvent(QKeyEvent *event)
 {
     switch ( event->key() )
-           {
-           case Qt::Key_Left:
-               qDebug()<<"gauche";
-               EnvoyerCommande('L');
-               break;
-           case Qt::Key_Right:
-               qDebug()<<"droit";
-               EnvoyerCommande('R');
-               break;
-           case Qt::Key_Up:
-               qDebug()<<"haut";
-               EnvoyerCommande('U');
-               break;
-           case Qt::Key_Down:
-               qDebug()<<"bas";
-               EnvoyerCommande('D');
-               break;
-           }
+    {
+    case Qt::Key_A:
+        qDebug()<<"gauche";
+        EnvoyerCommande('L');
+        break;
+    case Qt::Key_D:
+        qDebug()<<"droit";
+        EnvoyerCommande('R');
+        break;
+    case Qt::Key_W:
+        qDebug()<<"haut";
+        EnvoyerCommande('U');
+        break;
+    case Qt::Key_S:
+        qDebug()<<"bas";
+        EnvoyerCommande('D');
+        break;
+    }
 
 }
 
@@ -146,4 +147,8 @@ void ClientCrawler::EnvoyerCommande(QChar commande)
     socketClient->write(tampon.buffer());
 }
 
+void ClientCrawler::ViderGrille()
+{
+    scene->clear();
+}
 

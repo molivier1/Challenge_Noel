@@ -1,6 +1,6 @@
-QT       += core gui network multimedia
+QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets network multimedia
 
 CONFIG += c++17
 
@@ -10,15 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    qgraphicsboulehorizontalitem.cpp \
-    serveurcrawler.cpp
+    clientcrawler.cpp
 
 HEADERS += \
-    qgraphicsboulehorizontalitem.h \
-    serveurcrawler.h
+    clientcrawler.h
 
 FORMS += \
-    serveurcrawler.ui
+    clientcrawler.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

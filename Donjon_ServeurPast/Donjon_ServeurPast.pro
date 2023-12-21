@@ -10,11 +10,9 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    qgraphicsboulehorizontalitem.cpp \
     serveurcrawler.cpp
 
 HEADERS += \
-    qgraphicsboulehorizontalitem.h \
     serveurcrawler.h
 
 FORMS += \

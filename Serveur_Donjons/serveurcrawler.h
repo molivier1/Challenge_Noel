@@ -12,7 +12,12 @@
 #include <QBuffer>
 #include <QThread>
 #include <QGraphicsScene>
-#include <QGraphicsRectItem>
+#include <QGraphicsView>
+#include <QGraphicsItem>
+#include <QPixmap>
+#include "qgraphicsboulehorizontalitem.h"
+
+
 #define TAILLE 40
 
 QT_BEGIN_NAMESPACE
@@ -35,8 +40,6 @@ private slots:
     void onQTcpSocketErrorOccured(QAbstractSocket::SocketError socketError);
     void EnvoyerDonnees(QTcpSocket* client, QPoint pt, QString msg);
 
-    void AfficherGrille();
-
     void on_pushButtonLancer_clicked();
 
 private:
@@ -44,7 +47,10 @@ private:
     QTcpServer *socketEcouteServeur;
     QList<QTcpSocket *> listeSocketClient;
     QList<QPoint> listePositions;
-    QGraphicsRectItem *joueur;
+    QGraphicsView *vue;
+    QGraphicsScene *scene;
+    QGraphicsBouleHorizontalItem *boule;
+
 
 };
 #endif // SERVEURCRAWLER_H

@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    clientcrawler.cpp
+    clientcrawler.cpp \
+    qgraphicsboulehorizontalitem.cpp
 
 HEADERS += \
-    clientcrawler.h
+    clientcrawler.h \
+    qgraphicsboulehorizontalitem.h
 
 FORMS += \
     clientcrawler.ui

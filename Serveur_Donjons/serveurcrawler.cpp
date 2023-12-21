@@ -7,7 +7,7 @@ ServeurCrawler::ServeurCrawler(QWidget *parent)
 {
     ui->setupUi(this);
     socketEcouteServeur = new QTcpServer(this);
-    connect(socketEcouteServeur, &QTcpServer::newConnection, this, &ServeurCrawler::onQTcpServerNewConnection);
+
 }
 
 ServeurCrawler::~ServeurCrawler()
@@ -30,57 +30,59 @@ void ServeurCrawler::onQTcpServerNewConnection()
     qDebug() << "Client : " + addresseClient.toString();
     QPoint pos=DonnerPositionUnique();
     listePositions.append(pos);
-    AfficherGrille();
 }
 
 void ServeurCrawler::onQTcpSocketReadyRead()
 {
+    QChar   commande;
     quint16 taille=0;
-    QChar commande;
-    QTcpSocket *client = qobject_cast<QTcpSocket*>(sender());
-    int indexClient = listeSocketClient.indexOf(client);
-//    QPoint posclient = listePositions.at(indexClient);
-    // Il y a au moins le champs taille d'arrive
-    if (client->bytesAvailable() >= (qint64)sizeof(taille))
+    QTcpSocket *socketVersClient=qobject_cast<QTcpSocket*>(sender());
+    int indexClient = listeSocketClient.indexOf(socketVersClient);
+    QPoint pos = listePositions.at(indexClient);
+
+    if (socketVersClient->bytesAvailable() >= (qint64)sizeof(taille))
     {
-        // Lecture de la taille de la trame
-        QDataStream in(client);
+        QDataStream in(socketVersClient);
         in >> taille;
-        // Le reste de la trame est disponible
-        if (client->bytesAvailable() >= (qint64)taille)
+
+        if (socketVersClient->bytesAvailable() >= (qint64)taille)
         {
-            // Lecture de la commande
-            in>>commande;
+            // decomposition de la trame
+            in >> commande;
             switch (commande.toLatin1()) {
-            case 'U':
-                //posclient.setY(posclient.y()-1);
-                joueur->moveBy(0,-10);
-                break;
             case 'D':
-                //posclient.setY(posclient.y()+1);
-                joueur->moveBy(0,10);
+                pos.setY((pos.y()+11));
                 break;
-            case 'L':
-                //posclient.setX(posclient.x()-1);
-                joueur->moveBy(-10,0);
+            case 'U':
+                pos.setY(abs(pos.y()-11));
                 break;
             case 'R':
-                //posclient.setX(posclient.x()+1);
-                joueur->moveBy(10,0);
+                pos.setX((pos.x()+11));
+                break;
+            case 'L':
+                pos.setX(abs(pos.x()-11));
                 break;
             }
-            //collision
-//            if(listePositions.contains(joueur)){
-//                int indexAutre=listePositions.indexOf(joueur);
-//                QPoint posAutre = DonnerPositionUnique();
-//                QPoint posClient = DonnerPositionUnique();
-//                listePositions.replace(indexAutre,posAutre);
-//                listePositions.replace(indexClient,posClient);
-//                EnvoyerDonnees(client,posClient,"collision");
-//                EnvoyerDonnees(listeSocketClient.at(indexAutre),posAutre,"collision");
-//            }
+            // collision?
+            if (listePositions.contains(pos))
+            {
+                int indexAutre = listePositions.indexOf(pos);
+                listePositions.replace(indexClient,DonnerPositionUnique());
+                listePositions.replace(indexAutre,DonnerPositionUnique());
+                // envoyer position aux clients
+                EnvoyerDonnees(socketVersClient,listePositions.at(indexClient),"collision");
+                EnvoyerDonnees(listeSocketClient.at(indexAutre),listePositions.at(indexAutre),"collision");
+            }
+            else
+            {
+                   // autre
+
+                    listePositions.replace(indexClient,pos);
+                    // envoyer position au client
+                    EnvoyerDonnees(socketVersClient,pos,"vide");
+
+            }
         }
-        AfficherGrille();
     }
 }
 
@@ -109,6 +111,7 @@ void ServeurCrawler::on_pushButtonLancer_clicked()
                 qDebug()<<"Adresse serveur : " + it->toString();
             }
         }
+        connect(socketEcouteServeur, &QTcpServer::newConnection, this, &ServeurCrawler::onQTcpServerNewConnection);
         ui->pushButtonLancer->setEnabled(false);
         ui->spinBoxPort->setEnabled(false);
     }else{
@@ -147,13 +150,3 @@ QPoint ServeurCrawler::DonnerPositionUnique()
     return pt;
 }
 
-void ServeurCrawler::AfficherGrille()
-{
-
-    foreach(QPoint pt,listePositions){
-        joueur = new QGraphicsRectItem(0,0,20,20);
-        QBrush interieurRec(Qt::red);
-        joueur->setBrush(interieurRec);
-        joueur->setPos(pt.x(),pt.y());
-    }
-}
