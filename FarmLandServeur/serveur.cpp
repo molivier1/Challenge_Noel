@@ -92,6 +92,8 @@ void Serveur::onQTcpSocket_readyRead()
 
     QString username;
 
+    QString message;
+
     // Il y a au moins le champs taille d'arrive
     if (client->bytesAvailable() >= (qint64)sizeof(taille))
     {
@@ -162,6 +164,14 @@ void Serveur::onQTcpSocket_readyRead()
                 joueur->setUsername(username);
                 ui->textEditLogs->append(username);
                 break;
+
+            case 'f':
+                in >> message;
+
+                if(message == "ble")
+                {
+
+                }
             }
             if(checkZone(joueur) != -1)
             {
@@ -317,61 +327,82 @@ void Serveur::envoyerDonneesAll()
 void Serveur::checkPositions()
 {
     int valid;
+    QString message;
     foreach(Joueur *joueurCourant, listeJoueurs)
     {
         valid = 0;
+        message = "no";
         QPoint pos = joueurCourant->getPos();
+        //Commande -> f
+        // ble
         if (pos.x() >= 243 && pos.x() <= 243 + 100 && pos.y() <= 245 && pos.y() >= 245-80)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le blé";
+            message = "ble";
             valid++;
         }
 
+        // roche
         if (pos.x() >= 90 && pos.x() <= 90 + 100 && pos.y() <= 240 && pos.y() >= 240-60)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la roche";
+            message = "roche";
             valid++;
         }
 
+        // chene
         if (pos.x() >= 225 && pos.x() <= 225 + 85 && pos.y() <= 100 && pos.y() >= 100-60)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le bois de chêne";
+            message = "chene";
             valid++;
         }
 
+        // carotte
         if (pos.x() >= 605 && pos.x() <= 605 + 80 && pos.y() <= 115 && pos.y() >= 115-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la carotte";
+            message = "carotte";
             valid++;
         }
 
+        // fer
         if (pos.x() >= 615 && pos.x() <= 615 + 75 && pos.y() <= 240 && pos.y() >= 240-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le fer";
+            message = "fer";
             valid++;
         }
 
+        // bouleau
         if (pos.x() >= 400 && pos.x() <= 400 + 85 && pos.y() <= 115 && pos.y() >= 115-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le bois de bouleau";
+            message = "bouleau";
             valid++;
         }
 
+        // patate
         if (pos.x() >= 590 && pos.x() <= 590 + 80 && pos.y() <= 377 && pos.y() >= 377-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans la patate";
+            message = "patate";
             valid++;
         }
 
+        // diamant
         if (pos.x() >= 415 && pos.x() <= 415 + 100 && pos.y() <= 375 && pos.y() >= 375-65)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le diamant";
+            message = "diamant";
             valid++;
         }
 
+        // sapin
         if (pos.x() >= 232 && pos.x() <= 232 + 85 && pos.y() <= 376 && pos.y() >= 376-70)
         {
             qDebug() << joueurCourant->getUsername() << " est dans le bois de sapin";
+            message = "sapin";
             valid++;
         }
 
@@ -381,6 +412,11 @@ void Serveur::checkPositions()
             // Faire truc
             // faire fonction pour chaque case qui va enable bouton farm chez client
             // si valid == 0 alors disable chez le joueur
+            envoyerValidFarm(joueurCourant->getSockClient(), false, message);
+        }
+        else
+        {
+            envoyerValidFarm(joueurCourant->getSockClient(), true, message);
         }
     }
 }
@@ -463,5 +499,26 @@ void Serveur::envoyerInventaire()
 
         tampon.close();
     }
+}
+
+void Serveur::envoyerValidFarm(QTcpSocket *client, bool valid, QString message)
+{
+    quint16 taille=0;
+    QBuffer tampon;
+    QChar commande = 'f';
+    // construction de la trame à envoyer au client
+    tampon.open(QIODevice::WriteOnly);
+    // association du tampon au flux de sortie
+    QDataStream out(&tampon);
+    // construction de la trame
+    out<<taille<<commande<<valid<<message;
+    // calcul de la taille de la trame
+    taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
+    // placement sur la premiere position du flux pour pouvoir modifier la taille
+    tampon.seek(0);
+    //modification de la trame avec la taille reel de la trame
+    out << taille;
+    // envoi du QByteArray du tampon via la socket
+    client->write(tampon.buffer());
 }
 

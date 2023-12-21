@@ -66,5 +66,7 @@ private:
     bool zone3Verif;
 
     void envoyerInventaire();
+
+    void envoyerValidFarm(QTcpSocket *client, bool valid, QString message);
 };
 #endif // SERVEUR_H
