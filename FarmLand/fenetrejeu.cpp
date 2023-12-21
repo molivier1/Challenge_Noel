@@ -78,8 +78,25 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     QPixmap tailleImageDiamant = Diamant.scaled(QSize(30, 30), Qt::KeepAspectRatio);
     ui->labelDiamant->setPixmap(tailleImageDiamant);
 
+    zone2 = false;
+    zone3 = false;
 
+    QPolygon polyZone2;
+    polyZone2.setPoints(4,
+                    414, 45,
+                    737, 45,
+                    737, 313,
+                    414, 313);
 
+    zone2Item = new QGraphicsPolygonItem(polyZone2);
+
+    QPen contour(Qt::black);
+    QBrush brush(Qt::black);
+    contour.setWidth(2);
+    zone2Item->setPen(contour);
+    zone2Item->setBrush(brush);
+
+    maScene.addItem(zone2Item);
 }
 FenetreJeu::~FenetreJeu()
 {
@@ -90,8 +107,8 @@ FenetreJeu::~FenetreJeu()
 void FenetreJeu::on_pushButtonNouvelleZone_clicked()
 {
 
+    /*
     if(ui->pushButtonNouvelleZone->text()== "")
-
     {
         if(zoneCommune == 1)
         {
@@ -101,8 +118,10 @@ void FenetreJeu::on_pushButtonNouvelleZone_clicked()
 
             ui->labelNouvelleZone->setText("Vous n'avez pas les ressources suffisantes");
         }
-
     }
+    */
+
+    EnvoyerCommande('r');
 }
 
 void FenetreJeu::onQTcpSocket_connected()
@@ -171,14 +190,24 @@ void FenetreJeu::onQTcpSocket_readyRead()
             switch (commande.toLatin1()) {
             // Haut
             case 'a':
-                in>>index>>listePosition >> nouveauCoffre>>valide>>message;
+                in>>index>>listePosition >> nouveauCoffre>>valide>>message>>zone2>>zone3;
+
+                // log debug
                 qDebug() << index << " + " << listePosition.at(index);
                 qDebug() << valide << message;
+
+                qDebug() << "zone 2 : " << zone2;
+                qDebug() << "zone 3 : " << zone3;
 
                 coffre = nouveauCoffre;
 
                 newPos = listePosition.at(index);
                 joueur->setPos(newPos);
+
+                if (zone2 == true)
+                {
+                    zone2Item->hide();
+                }
 
                 actualiserRessources();
                 break;

@@ -55,5 +55,10 @@ private:
 
     void actualiserRessources();
 
+    bool zone2;
+    bool zone3;
+
+    QGraphicsPolygonItem *zone2Item;
+
 };
 #endif // FENETREJEU_H
