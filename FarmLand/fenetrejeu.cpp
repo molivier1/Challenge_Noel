@@ -87,21 +87,33 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     zone3 = false;
 
     QPolygon polyZone2;
+    QPolygon polyZone3;
     polyZone2.setPoints(4,
-                    414, 45,
-                    737, 45,
-                    737, 313,
-                    414, 313);
+                        414, 45,
+                        737, 45,
+                        737, 313,
+                        414, 313);
+
+    polyZone3.setPoints(4,
+                        740,314,
+                        740,448,
+                        90,447,
+                        90,313);
 
     zone2Item = new QGraphicsPolygonItem(polyZone2);
+    zone3Item = new QGraphicsPolygonItem(polyZone3);
+
+    QBrush semiTransparentBrush(QColor(0, 0, 0, 200));
+    zone2Item->setBrush(semiTransparentBrush);
+    zone3Item->setBrush(semiTransparentBrush);
 
     QPen contour(Qt::black);
-    QBrush brush(Qt::black);
     contour.setWidth(2);
     zone2Item->setPen(contour);
-    zone2Item->setBrush(brush);
+    zone3Item->setPen(contour);
 
     maScene.addItem(zone2Item);
+    maScene.addItem(zone3Item);
 }
 FenetreJeu::~FenetreJeu()
 {
@@ -167,6 +179,9 @@ void FenetreJeu::onQTcpSocket_disconnected()
     maVue->setEnabled(false);
     ui->lineEditAdresse->setEnabled(false);
     ui->spinBoxPort->setEnabled(false);
+
+    zone2 = false;
+    zone3 = false;
 }
 
 void FenetreJeu::onQTcpSocket_readyRead()
@@ -213,7 +228,18 @@ void FenetreJeu::onQTcpSocket_readyRead()
                 {
                     zone2Item->hide();
                 }
+                else
+                {
+                    zone2Item->show();
+                }
 
+                if (zone3 == true) {
+                    zone3Item->hide();
+                }
+                else
+                {
+                    zone3Item->show();
+                }
                 actualiserRessources();
                 break;
 

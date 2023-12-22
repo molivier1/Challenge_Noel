@@ -59,6 +59,7 @@ private:
     bool zone3;
 
     QGraphicsPolygonItem *zone2Item;
+    QGraphicsPolygonItem *zone3Item;
 
 };
 #endif // FENETREJEU_H
