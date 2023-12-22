@@ -42,6 +42,13 @@ private slots:
     void obtenirCoordonneesCurseur();
     void onQMediaPlayer_playbackStateChanged(QMediaPlayer::PlaybackState newState);
     void onQGraphicsViewPerso_positionSouris(QPoint pos);
+    void on_pushButtonAmeliorerHoue_clicked();
+
+    void on_pushButtonAmeliorerPioche_clicked();
+
+    void on_pushButtonAmeliorerHache_clicked();
+
+    void on_pushButtonAmeliorerEpee_clicked();
 
 private:
     Ui::FenetreJeu *ui;
@@ -55,15 +62,22 @@ private:
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};
     QString message;
     QString nomFichier;
-    QMediaPlayer player;
-    QAudioOutput sortieAudio;
+    QMediaPlayer playerZone1;
+    QMediaPlayer playerZone2;
+    QMediaPlayer playerZone3;
+    QAudioOutput sortieAudio1;
+    QAudioOutput sortieAudio2;
+    QAudioOutput sortieAudio3;
 
     void actualiserRessources();
     void joueurZone1();
+    void joueurZone2();
+    void joueurZone3();
 
     bool zone2;
     bool zone3;
 
+    QGraphicsPolygonItem *zone1Item;
     QGraphicsPolygonItem *zone2Item;
     QGraphicsPolygonItem *zone3Item;
 

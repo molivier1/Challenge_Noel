@@ -18,7 +18,9 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     connect(socketFarmLand,&QTcpSocket::disconnected,this,&FenetreJeu::onQTcpSocket_disconnected);
     connect(socketFarmLand,&QTcpSocket::readyRead,this,&FenetreJeu::onQTcpSocket_readyRead);
     connect(socketFarmLand,&QTcpSocket::errorOccurred,this,&FenetreJeu::onQTcpSocket_errorOccured);
-    connect(&player,&QMediaPlayer::playbackStateChanged,this,&FenetreJeu::onQMediaPlayer_playbackStateChanged);
+    connect(&playerZone1,&QMediaPlayer::playbackStateChanged,this,&FenetreJeu::onQMediaPlayer_playbackStateChanged);
+    connect(&playerZone2,&QMediaPlayer::playbackStateChanged,this,&FenetreJeu::onQMediaPlayer_playbackStateChanged);
+    connect(&playerZone3,&QMediaPlayer::playbackStateChanged,this,&FenetreJeu::onQMediaPlayer_playbackStateChanged);
     maScene.setSceneRect(0,0,800,462);
 
     maVue = new QGraphicsViewPerso(this);
@@ -83,8 +85,14 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     zone2 = false;
     zone3 = false;
 
+    QPolygon polyZone1;
     QPolygon polyZone2;
     QPolygon polyZone3;
+    polyZone1.setPoints(4,
+                        90, 43,
+                        413,43,
+                        413, 314,
+                        90, 314);
     polyZone2.setPoints(4,
                         414, 45,
                         737, 45,
@@ -97,20 +105,42 @@ FenetreJeu::FenetreJeu(QWidget *parent)
                         90,447,
                         90,313);
 
+    zone1Item = new QGraphicsPolygonItem(polyZone1);
     zone2Item = new QGraphicsPolygonItem(polyZone2);
     zone3Item = new QGraphicsPolygonItem(polyZone3);
 
     QBrush semiTransparentBrush(QColor(0, 0, 0, 200));
+    zone1Item->setBrush(semiTransparentBrush);
     zone2Item->setBrush(semiTransparentBrush);
     zone3Item->setBrush(semiTransparentBrush);
 
     QPen contour(Qt::black);
     contour.setWidth(2);
+    zone1Item->setPen(contour);
     zone2Item->setPen(contour);
     zone3Item->setPen(contour);
 
+    maScene.addItem(zone1Item);
     maScene.addItem(zone2Item);
     maScene.addItem(zone3Item);
+
+    zone1Item->hide();
+
+    QString nomFichierZone1 = "../FarmLand/bruitHerbe.mp3";
+    QString nomFichierZone2 = "../FarmLand/bruitmarchesursable.mp3";
+    QString nomFichierZone3 = "../FarmLand/courseGravier.mp3";
+
+    sortieAudio1.setVolume(100);
+    playerZone1.setAudioOutput(&sortieAudio1);
+    playerZone1.setSource(QUrl::fromLocalFile(nomFichierZone1));
+
+    sortieAudio2.setVolume(100);
+    playerZone2.setAudioOutput(&sortieAudio2);
+    playerZone2.setSource(QUrl::fromLocalFile(nomFichierZone2));
+
+    sortieAudio3.setVolume(100);
+    playerZone3.setAudioOutput(&sortieAudio3);;
+    playerZone3.setSource(QUrl::fromLocalFile(nomFichierZone3));
 }
 FenetreJeu::~FenetreJeu()
 {
@@ -120,21 +150,6 @@ FenetreJeu::~FenetreJeu()
 
 void FenetreJeu::on_pushButtonNouvelleZone_clicked()
 {
-
-    /*
-    if(ui->pushButtonNouvelleZone->text()== "")
-    {
-        if(zoneCommune == 1)
-        {
-            ui->labelNouvelleZone->setText("Zone 2 débloqué");
-        }
-        else{
-
-            ui->labelNouvelleZone->setText("Vous n'avez pas les ressources suffisantes");
-        }
-    }
-    */
-
     EnvoyerCommande('r');
 }
 
@@ -241,6 +256,8 @@ void FenetreJeu::onQTcpSocket_readyRead()
                 }
                 actualiserRessources();
                 joueurZone1();
+                joueurZone2();
+                joueurZone3();
                 break;
 
             }
@@ -397,17 +414,14 @@ void FenetreJeu::actualiserRessources()
 void FenetreJeu::joueurZone1()
 {
 
-    QString nomFichier = "../FarmLand/bruitmarchesursable.mp3";
 
-    if (joueur->collidesWithItem(zone2Item))
+    if (joueur->collidesWithItem(zone1Item))
     {
-        if (!player.isPlaying())
+        if (!playerZone1.isPlaying())
         {
-            qDebug() << "Collision détectée avec la zone 2";
+            qDebug() << "Collision détectée avec la zone 1";
 
-            player.setAudioOutput(&sortieAudio);
-            player.setSource(QUrl::fromLocalFile(nomFichier));
-            player.play();
+            playerZone1.play();
 
             qDebug() << "Le fichier audio devrait être en train de jouer.";
         }
@@ -415,10 +429,87 @@ void FenetreJeu::joueurZone1()
     }
     else
     {
-        player.stop();
+        playerZone1.stop();
     }
 
 
     qDebug() << "Le fichier audio devrait être arrêté.";
+}
+void FenetreJeu::joueurZone2()
+{
+
+    if (joueur->collidesWithItem(zone2Item))
+    {
+
+        if (!playerZone2.isPlaying())
+        {
+
+            qDebug() << "Collision détectée avec la zone 2";
+
+
+            playerZone2.play();
+
+            qDebug() << "Le fichier audio devrait être en train de jouer.";
+        }
+
+    }
+    else
+    {
+        playerZone2.stop();
+    }
+
+
+    qDebug() << "Le fichier audio devrait être arrêté.";
+}
+
+void FenetreJeu::joueurZone3()
+{
+    if (joueur->collidesWithItem(zone3Item))
+    {
+        if (!playerZone3.isPlaying())
+        {
+            qDebug() << "Collision détectée avec la zone 3";
+
+
+            playerZone3.play();
+
+            qDebug() << "Le fichier audio devrait être en train de jouer.";
+        }
+
+    }
+    else
+    {
+        playerZone3.stop();
+    }
+
+
+    qDebug() << "Le fichier audio devrait être arrêté.";
+}
+
+void FenetreJeu::on_pushButtonAmeliorerHoue_clicked()
+{
+    EnvoyerCommande('h');
+    qDebug() << "Presser bouton ameliorer Houe";
+}
+
+
+void FenetreJeu::on_pushButtonAmeliorerPioche_clicked()
+{
+    EnvoyerCommande('i');
+    qDebug() << "Presser bouton ameliorer Pioche";
+}
+
+
+void FenetreJeu::on_pushButtonAmeliorerHache_clicked()
+{
+    EnvoyerCommande('o');
+    qDebug() << "Presser bouton ameliorer Hache";
+}
+
+
+void FenetreJeu::on_pushButtonAmeliorerEpee_clicked()
+{
+    EnvoyerCommande('p');
+    qDebug() << "Presser bouton ameliorer Epee";
 }
 
