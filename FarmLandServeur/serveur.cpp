@@ -96,6 +96,9 @@ void Serveur::onQTcpSocket_readyRead()
 
     QString message;
 
+    int pasX = 20;
+    int pasY = 20;
+
     // Il y a au moins le champs taille d'arrive
     if (client->bytesAvailable() >= (qint64)sizeof(taille))
     {
@@ -111,53 +114,53 @@ void Serveur::onQTcpSocket_readyRead()
             // Haut
             case '8':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut");
-                newPos.setY(newPos.y()-5);
+                newPos.setY(newPos.y()-pasY);
                 break;
 
                 // Bas
             case '2':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas");
-                newPos.setY(newPos.y()+5);
+                newPos.setY(newPos.y()+pasY);
                 break;
 
                 // Gauche
             case '4':
                 ui->textEditLogs->append(joueur->getUsername() + ": Gauche");
-                newPos.setX(newPos.x()-5);
+                newPos.setX(newPos.x()-pasX);
                 break;
 
                 // Droite
             case '6':
                 ui->textEditLogs->append(joueur->getUsername() + ": Droite");
-                newPos.setX(newPos.x()+5);
+                newPos.setX(newPos.x()+pasX);
                 break;
 
                 // Haut-Gauche
             case '7':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut-Gauche");
-                newPos.setX(newPos.x()-5);
-                newPos.setY(newPos.y()-5);
+                newPos.setX(newPos.x()-pasX);
+                newPos.setY(newPos.y()-pasY);
                 break;
 
                 // Bas-Gauche
             case '1':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas-Gauche");
-                newPos.setX(newPos.x()-5);
-                newPos.setY(newPos.y()+5);
+                newPos.setX(newPos.x()-pasX);
+                newPos.setY(newPos.y()+pasY);
                 break;
 
                 // Haut-Droit
             case '9':
                 ui->textEditLogs->append(joueur->getUsername() + ": Haut-Droit");
-                newPos.setX(newPos.x()+5);
-                newPos.setY(newPos.y()-5);
+                newPos.setX(newPos.x()+pasX);
+                newPos.setY(newPos.y()-pasY);
                 break;
 
                 // Bas-Droit
             case '3':
                 ui->textEditLogs->append(joueur->getUsername() + ": Bas-Droit");
-                newPos.setX(newPos.x()+5);
-                newPos.setY(newPos.y()+5);
+                newPos.setX(newPos.x()+pasX);
+                newPos.setY(newPos.y()+pasY);
                 break;
 
                 // Username
