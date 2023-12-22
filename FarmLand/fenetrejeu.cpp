@@ -21,7 +21,7 @@ FenetreJeu::FenetreJeu(QWidget *parent)
 
     ui->pushButtonNouvelleZone->setStyleSheet("background-position: center;"
                                               "background : no-repeat;"
-                                              "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Images/images.jpg')");
+                                              "background-image: url('../FarmLand/plus.png')");
 
     maScene.setSceneRect(0,0,800,462);
 
@@ -35,6 +35,7 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     maVue->setStyleSheet("background-position: center;"
                          "background : no-repeat;"
                          "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/plan.webp')");
+    ui->pushButtonNouvelleZone->setStyleSheet("border-image:url(../FarmLand/plus.png);");
 
     /*joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/candy.png"));
     joueur->setScale(0.25);
@@ -182,6 +183,8 @@ void FenetreJeu::onQTcpSocket_disconnected()
 
     zone2Item->show();
     zone3Item->show();
+
+    ui->pushButtonConnexionServeur->setText("Connexion serveur");
 }
 
 void FenetreJeu::onQTcpSocket_readyRead()
