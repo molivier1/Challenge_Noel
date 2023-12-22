@@ -96,5 +96,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButtonQuitter</sender>
+   <signal>clicked()</signal>
+   <receiver>ClientCrawler</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>433</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

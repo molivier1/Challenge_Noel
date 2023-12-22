@@ -10,7 +10,7 @@ void QGraphicsBouleHorizontalItem::advance(int step)
 {
     moveBy(dx,dy); // deplacement de dx pixel horizontalement
     player.setAudioOutput(&sortieAudio);
-    player.setSource(QUrl::fromLocalFile("/home/USERS/ELEVES/SNIR2022/tsoulaimana/Téléchargements/EMOTIONAL DAMAGE.mp3"));
+    player.setSource(QUrl("qrc:/music/bruit.mp3"));
     sortieAudio.setVolume(50);
     qreal largeurBoule = rect().width();
     qreal largeurScene = scene()->width();
@@ -35,6 +35,7 @@ void QGraphicsBouleHorizontalItem::advance(int step)
 
     QList<QGraphicsItem*> listObjCollision=collidingItems();
     if(listObjCollision.count()>0){
+        qDebug()<<"son";
         player.play();
     }
 

@@ -12,8 +12,9 @@
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
+#include <QTimer>
 
-#define TAILLE 20
+#define TAILLE 1
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ClientCrawler; }
@@ -35,16 +36,19 @@ private slots:
     void EnvoyerCommande(QChar commande);
     void keyPressEvent(QKeyEvent *event);
     void ViderGrille();
-
 private:
     Ui::ClientCrawler *ui;
     QGraphicsRectItem *joueur;
     QTcpSocket *socketClient;
     QGraphicsScene *scene;
     QGridLayout *grille;
-    QGraphicsBouleHorizontalItem *boule;
     QPoint position;
     QGraphicsView *vue;
+    QTimer timer;
+    QGraphicsBouleHorizontalItem *boule;
+    QGraphicsBouleHorizontalItem *boule2;
+    QGraphicsPixmapItem *recPerso;
+
 
 
 };

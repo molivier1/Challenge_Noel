@@ -6,13 +6,18 @@
 #include <QGraphicsScene>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QObject>
 
-class QGraphicsBouleHorizontalItem : public QGraphicsEllipseItem
+class QGraphicsBouleHorizontalItem : public QObject, public QGraphicsEllipseItem
 {
+    Q_OBJECT
 public:
-    QGraphicsBouleHorizontalItem(qreal x,qreal y, qreal width, qreal height, QGraphicsItem *parent = nullptr);
+    QGraphicsBouleHorizontalItem(qreal x,qreal y, qreal width, qreal height,QObject *parentObj=nullptr, QGraphicsItem *parent = nullptr);
 protected:
     void advance(int step) override;
+signals:
+    void positionBoule(QPointF p);
+
 private:
     qreal dx,dy;
     QMediaPlayer player;

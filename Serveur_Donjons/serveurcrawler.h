@@ -15,10 +15,11 @@
 #include <QGraphicsView>
 #include <QGraphicsItem>
 #include <QPixmap>
+#include <QTimer>
 #include "qgraphicsboulehorizontalitem.h"
 
 
-#define TAILLE 40
+#define TAILLE 20
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ServeurCrawler; }
@@ -38,18 +39,24 @@ private slots:
     void onQTcpSocketReadyRead();
     void onQTcpSocketDisconnect();
     void onQTcpSocketErrorOccured(QAbstractSocket::SocketError socketError);
-    void EnvoyerDonnees(QTcpSocket* client, QPoint pt, QString msg);
-
+    void EnvoyerDonnees(QTcpSocket* client, QPoint pt, QChar msg);
     void on_pushButtonLancer_clicked();
-
+    void onQMediaPlayer_playbackStateChanged(QMediaPlayer::PlaybackState newState);
+    void envoyerPositionBouleAuClients(QPointF posBoule);
 private:
     Ui::ServeurCrawler *ui;
+    qreal dx,dy;
+    QMediaPlayer player;
+    QAudioOutput sortieAudio;
     QTcpServer *socketEcouteServeur;
     QList<QTcpSocket *> listeSocketClient;
     QList<QPoint> listePositions;
-    QGraphicsView *vue;
-    QGraphicsScene *scene;
     QGraphicsBouleHorizontalItem *boule;
+    QGraphicsScene scene;
+    QGraphicsView *vue;
+    QTimer timer;
+    QGraphicsPixmapItem *recPerso;
+
 
 
 };
