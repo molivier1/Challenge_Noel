@@ -266,7 +266,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>1000</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValPatate">
@@ -279,7 +279,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValFer">
@@ -292,7 +292,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValDiamant">
@@ -305,7 +305,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValSapin">
@@ -318,7 +318,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValCarotte">
@@ -331,7 +331,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValRoche">
@@ -344,7 +344,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValChene">
@@ -357,7 +357,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="labelValBouleau">
@@ -370,7 +370,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>50</string>
+    <string/>
    </property>
   </widget>
  </widget>

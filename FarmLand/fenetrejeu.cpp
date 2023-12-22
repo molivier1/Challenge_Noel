@@ -36,7 +36,12 @@ FenetreJeu::FenetreJeu(QWidget *parent)
                          "background : no-repeat;"
                          "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/plan.webp')");
 
-    joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/candy.png"));
+    /*joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/candy.png"));
+    joueur->setScale(0.25);
+    maScene.addItem(joueur);
+    joueur->hide();*/
+
+    joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/Gorgious.png"));
     joueur->setScale(0.25);
     maScene.addItem(joueur);
     joueur->hide();
@@ -324,13 +329,8 @@ void FenetreJeu::on_pushButtonConnexionServeur_clicked()
 
 void FenetreJeu::obtenirCoordonneesCurseur()
 {
-    // Obtenez la position actuelle du curseur de la souris
     QPoint cursorPos = QCursor::pos();
-
-    // Affichez les coordonnées du curseur (vous pouvez ajuster cela en fonction de vos besoins)
     qDebug() << "Coordonnées du curseur de la souris : " << cursorPos.x() << ", " << cursorPos.y();
-
-    // Faites ce que vous voulez avec les coordonnées ici...
 }
 
 void FenetreJeu::onQGraphicsViewPerso_positionSouris(QPoint pos)
