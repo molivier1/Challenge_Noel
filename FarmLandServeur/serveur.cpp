@@ -172,47 +172,145 @@ void Serveur::onQTcpSocket_readyRead()
             case 'f':
                 if(message == "ble")
                 {
-                    coffreCommun.setBle(coffreCommun.getBle()+1);
+                    if (joueur->houe==1) {
+                        coffreCommun.setBle(coffreCommun.getBle()+1);
+                    }
+                    if (joueur->houe==2) {
+                        coffreCommun.setBle(coffreCommun.getBle()+2);
+                    }
+                    if (joueur->houe==3) {
+                        coffreCommun.setBle(coffreCommun.getBle()+3);
+                    }
+                    if (joueur->houe==4) {
+                        coffreCommun.setBle(coffreCommun.getBle()+4);
+                    }
                 }
 
                 if(message == "roche")
                 {
-                    coffreCommun.setRoche(coffreCommun.getRoche()+1);
-                }
+                    if (joueur->pioche==1) {
+                        coffreCommun.setRoche(coffreCommun.getRoche()+1);
+                    }
+                    if (joueur->pioche==2) {
+                        coffreCommun.setRoche(coffreCommun.getRoche()+2);
+                    }
+                    if (joueur->pioche==3) {
+                        coffreCommun.setRoche(coffreCommun.getRoche()+3);
+                    }
+                    if (joueur->pioche==4) {
+                        coffreCommun.setRoche(coffreCommun.getRoche()+4);
+                    }                }
 
                 if(message == "chene")
                 {
-                    coffreCommun.setChene(coffreCommun.getChene()+1);
+                    if (joueur->hache==1) {
+                        coffreCommun.setChene(coffreCommun.getChene()+1);
+                    }
+                    if (joueur->hache==2) {
+                        coffreCommun.setChene(coffreCommun.getChene()+2);
+                    }
+                    if (joueur->hache==3) {
+                        coffreCommun.setChene(coffreCommun.getChene()+3);
+                    }
+                    if (joueur->hache==4) {
+                        coffreCommun.setChene(coffreCommun.getChene()+4);
+                    }
                 }
 
                 if(message == "carotte")
                 {
-                    coffreCommun.setCarotte(coffreCommun.getCarotte()+1);
+                    if (joueur->houe==1) {
+                        coffreCommun.setCarotte(coffreCommun.getCarotte()+0);
+                    }
+                    if (joueur->houe==2) {
+                        coffreCommun.setCarotte(coffreCommun.getCarotte()+0);
+                    }
+                    if (joueur->houe==3) {
+                        coffreCommun.setCarotte(coffreCommun.getCarotte()+1);
+                    }
+                    if (joueur->houe==4) {
+                        coffreCommun.setCarotte(coffreCommun.getCarotte()+2);
+                    }
                 }
 
                 if(message == "fer")
                 {
-                    coffreCommun.setFer(coffreCommun.getFer()+1);
+                    if (joueur->pioche==1) {
+                        coffreCommun.setFer(coffreCommun.getFer()+0);
+                    }
+                    if (joueur->pioche==2) {
+                        coffreCommun.setFer(coffreCommun.getFer()+0);
+                    }
+                    if (joueur->pioche==3) {
+                        coffreCommun.setFer(coffreCommun.getFer()+1);
+                    }
+                    if (joueur->pioche==4) {
+                        coffreCommun.setFer(coffreCommun.getFer()+2);
+                    }
                 }
 
                 if(message == "bouleau")
                 {
-                    coffreCommun.setBouleau(coffreCommun.getBouleau()+1);
+                    if (joueur->hache==1) {
+                        coffreCommun.setBouleau(coffreCommun.getBouleau()+0);
+                    }
+                    if (joueur->hache==2) {
+                        coffreCommun.setBouleau(coffreCommun.getBouleau()+0);
+                    }
+                    if (joueur->hache==3) {
+                        coffreCommun.setBouleau(coffreCommun.getBouleau()+1);
+                    }
+                    if (joueur->hache==4) {
+                        coffreCommun.setBouleau(coffreCommun.getBouleau()+1);
+                    }
                 }
 
                 if(message == "patate")
                 {
-                    coffreCommun.setPatate(coffreCommun.getPatate()+1);
+                    if (joueur->houe==1) {
+                        coffreCommun.setPatate(coffreCommun.getPatate()+0);
+                    }
+                    if (joueur->houe==2) {
+                        coffreCommun.setPatate(coffreCommun.getPatate()+0);
+                    }
+                    if (joueur->houe==3) {
+                        coffreCommun.setPatate(coffreCommun.getPatate()+0);
+                    }
+                    if (joueur->houe==4) {
+                        coffreCommun.setPatate(coffreCommun.getPatate()+1);
+                    }
                 }
 
                 if(message == "diamant")
                 {
-                    coffreCommun.setDiamant(coffreCommun.getDiamant()+1);
+                    if (joueur->pioche==1) {
+                        coffreCommun.setDiamant(coffreCommun.getDiamant()+0);
+                    }
+                    if (joueur->pioche==2) {
+                        coffreCommun.setDiamant(coffreCommun.getDiamant()+0);
+                    }
+                    if (joueur->pioche==3) {
+                        coffreCommun.setDiamant(coffreCommun.getDiamant()+0);
+                    }
+                    if (joueur->pioche==4) {
+                        coffreCommun.setDiamant(coffreCommun.getDiamant()+1);
+                    }
                 }
 
                 if(message == "sapin")
                 {
-                    coffreCommun.setSapin(coffreCommun.getSapin()+1);
+                    if (joueur->hache==1) {
+                        coffreCommun.setSapin(coffreCommun.getSapin()+0);
+                    }
+                    if (joueur->hache==2) {
+                        coffreCommun.setSapin(coffreCommun.getSapin()+0);
+                    }
+                    if (joueur->hache==3) {
+                        coffreCommun.setSapin(coffreCommun.getSapin()+0);
+                    }
+                    if (joueur->hache==4) {
+                        coffreCommun.setSapin(coffreCommun.getSapin()+1);
+                    }
                 }
                 break;
 
@@ -232,19 +330,173 @@ void Serveur::onQTcpSocket_readyRead()
                 }
 
                 break;
+            case 'h':
+
+                if (joueur->getHoue()==1) {
+                    if(coffreCommun.getBle() >= 100 )
+                    {
+                        joueur->setHoue(joueur->getHoue()+1);
+                        coffreCommun.setBle(coffreCommun.getBle() - 100);
+                    }
+
+                }
+                if (joueur->getHoue()==2) {
+                    if(coffreCommun.getBle() >= 300 )
+                    {
+                        joueur->setHoue(joueur->getHoue()+1);
+                        coffreCommun.setBle(coffreCommun.getBle() - 300);
+                    }
+
+                }
+                if (joueur->getHoue()==3) {
+                    if(coffreCommun.getCarotte() >= 500 )
+                    {
+                        joueur->setHoue(joueur->getHoue()+1);
+                        coffreCommun.setCarotte(coffreCommun.getCarotte() - 500);
+                    }
+
+                }
+                break;
+
+            case 'i':
+
+                if (joueur->getPioche()==1) {
+                    if(coffreCommun.getRoche() >= 100 )
+                    {
+                        joueur->setPioche(joueur->getPioche()+1);
+                        coffreCommun.setRoche(coffreCommun.getRoche() - 100);
+                    }
+
+                }
+                if (joueur->getPioche()==2) {
+                    if(coffreCommun.getRoche() >= 300 )
+                    {
+                        joueur->setPioche(joueur->getPioche()+1);
+                        coffreCommun.setRoche(coffreCommun.getRoche() - 300);
+                    }
+
+                }
+                if (joueur->getPioche()==3) {
+                    if(coffreCommun.getFer() >= 500 )
+                    {
+                        joueur->setPioche(joueur->getPioche()+1);
+                        coffreCommun.setFer(coffreCommun.getFer() - 500);
+                    }
+
+                }
+                break;
+
+            case 'o':
+
+                if (joueur->getHache()==1) {
+                    if(coffreCommun.getChene() >= 100 )
+                    {
+                        joueur->setHache(joueur->getHache()+1);
+                        coffreCommun.setChene(coffreCommun.getChene() - 100);
+                    }
+
+                }
+                if (joueur->getHache()==2) {
+                    if(coffreCommun.getChene() >= 300 )
+                    {
+                        joueur->setHache(joueur->getHache()+1);
+                        coffreCommun.setChene(coffreCommun.getChene() - 300);
+                    }
+
+                }
+                if (joueur->getHache()==3) {
+                    if(coffreCommun.getBouleau() >= 500 )
+                    {
+                        joueur->setHache(joueur->getHache()+1);
+                        coffreCommun.setBouleau(coffreCommun.getBouleau() - 500);
+                    }
+
+                }
+                break;
+            case 'p':
+                if (joueur->getEpee() == 0 &&
+                        coffreCommun.getChene() >= 100 &&
+                        coffreCommun.getRoche() >= 100 &&
+                        coffreCommun.getBle() >= 100) {
+
+                    joueur->setEpee(joueur->getEpee() + 1);
+                    coffreCommun.setChene(coffreCommun.getChene() - 100);
+                    coffreCommun.setRoche(coffreCommun.getRoche() - 100);
+                    coffreCommun.setBle(coffreCommun.getBle() - 100);
+                }
+
+                if (joueur->getEpee() == 1 &&
+                        coffreCommun.getChene() >= 200 &&
+                        coffreCommun.getRoche() >= 200 &&
+                        coffreCommun.getBle() >= 200 &&
+                        coffreCommun.getBouleau() >= 100 &&
+                        coffreCommun.getCarotte() >= 100 &&
+                        coffreCommun.getFer() >= 100) {
+
+                    joueur->setEpee(joueur->getEpee() + 1);
+                    coffreCommun.setChene(coffreCommun.getChene() - 200);
+                    coffreCommun.setRoche(coffreCommun.getRoche() - 200);
+                    coffreCommun.setBle(coffreCommun.getBle() - 200);
+                    coffreCommun.setBouleau(coffreCommun.getBouleau() - 100);
+                    coffreCommun.setFer(coffreCommun.getFer() - 100);
+                    coffreCommun.setCarotte(coffreCommun.getCarotte() - 100);
+                }
+
+
+                if (joueur->getEpee() == 2 &&
+                        coffreCommun.getChene() >= 300 &&
+                        coffreCommun.getRoche() >= 300 &&
+                        coffreCommun.getBle() >= 300 &&
+                        coffreCommun.getBouleau() >= 200 &&
+                        coffreCommun.getCarotte() >= 200 &&
+                        coffreCommun.getFer() >= 200) {
+
+                    joueur->setEpee(joueur->getEpee() + 1);
+                    coffreCommun.setChene(coffreCommun.getChene() - 300);
+                    coffreCommun.setRoche(coffreCommun.getRoche() - 300);
+                    coffreCommun.setBle(coffreCommun.getBle() - 300);
+                    coffreCommun.setBouleau(coffreCommun.getBouleau() - 200);
+                    coffreCommun.setFer(coffreCommun.getFer() - 200);
+                    coffreCommun.setCarotte(coffreCommun.getCarotte() - 200);
+                }
+
+                if (joueur->getEpee() == 3 &&
+                        coffreCommun.getChene() >= 500 &&
+                        coffreCommun.getRoche() >= 500 &&
+                        coffreCommun.getBle() >= 500 &&
+                        coffreCommun.getBouleau() >= 300 &&
+                        coffreCommun.getCarotte() >= 300 &&
+                        coffreCommun.getFer() >= 300 &&
+                        coffreCommun.getSapin() >= 200 &&
+                        coffreCommun.getPatate() >= 200 &&
+                        coffreCommun.getDiamant() >= 200) {
+
+                    joueur->setEpee(joueur->getEpee() + 1);
+                    coffreCommun.setChene(coffreCommun.getChene() - 500);
+                    coffreCommun.setRoche(coffreCommun.getRoche() - 500);
+                    coffreCommun.setBle(coffreCommun.getBle() - 500);
+                    coffreCommun.setBouleau(coffreCommun.getBouleau() - 300);
+                    coffreCommun.setFer(coffreCommun.getFer() - 300);
+                    coffreCommun.setCarotte(coffreCommun.getCarotte() - 300);
+                    coffreCommun.setSapin(coffreCommun.getSapin() - 200);
+                    coffreCommun.setPatate(coffreCommun.getPatate() - 200);
+                    coffreCommun.setDiamant(coffreCommun.getDiamant() - 200);
+                }
+                break;
             }
-            if(checkZone(joueur) != -1)
-            {
-                joueur->setPos(newPos);
-            }
-            else
-            {
-                //joueur->setPos(QPoint(20, 120));
-            }
-            envoyerDonneesAll();
         }
+        if(checkZone(joueur) != -1)
+        {
+            joueur->setPos(newPos);
+        }
+        else
+        {
+            //joueur->setPos(QPoint(20, 120));
+        }
+        envoyerDonneesAll();
     }
 }
+
 
 void Serveur::onQTcpSocket_disconnected()
 {
@@ -375,7 +627,7 @@ void Serveur::envoyerDonneesAll()
         // construction de la trame
         out<<taille<<commande<<index<<listePosition<<coffreCommun
           <<checkPositions(joueurCourant)<<messageValide
-            <<zone2Verif<<zone3Verif;
+         <<zone2Verif<<zone3Verif;
         // calcul de la taille de la trame
         taille=(static_cast<quint16>(tampon.size()))-sizeof(taille);
         // placement sur la premiere position du flux pour pouvoir modifier la taille

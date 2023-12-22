@@ -30,13 +30,14 @@ public:
     QString getUsername() const;
     void setUsername(QString newUsername);
 
-private:
-    QTcpSocket *sockClient;
-
     int epee;
     int pioche;
     int hache;
     int houe;
+
+private:
+    QTcpSocket *sockClient;
+
 
     QPoint pos;
 
