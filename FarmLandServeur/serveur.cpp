@@ -48,6 +48,10 @@ Serveur::Serveur(QWidget *parent)
 
     zone2Verif = false;
     zone3Verif = false;
+
+    timer = new QTimer(this);
+    timer->start(50);
+    connect(timer, &QTimer::timeout, this, &Serveur::onQTimer_timeout);
 }
 
 Serveur::~Serveur()
@@ -288,6 +292,11 @@ void Serveur::on_pushButtonLancerServeur_clicked()
     }
 }
 
+void Serveur::onQTimer_timeout()
+{
+
+}
+
 void Serveur::EnvoyerDonnees(QTcpSocket *client)
 {
     quint16 taille=0;
@@ -505,7 +514,7 @@ int Serveur::checkZone(Joueur *joueur)
 
     // Zone 2
     //if (pos.x() >= 414 && pos.x() <= 737 && pos.y() >= 45 && pos.y() <= 313)
-    if (zone2Verif == false && pos.x() >= 414 || zone2Verif == false && pos.x()+40 >= 414)
+    if ((zone2Verif == false && pos.x() >= 414) || (zone2Verif == false && pos.x()+40 >= 414))
     {
         pos.setX(pos.x()-20);
         joueur->setPos(pos);

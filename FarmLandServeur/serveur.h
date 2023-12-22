@@ -17,6 +17,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+#include <QTimer>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Serveur; }
 QT_END_NAMESPACE
@@ -36,6 +38,7 @@ private slots:
     void onQTcpSocket_errorOccured(QAbstractSocket::SocketError socketError);
 
     void on_pushButtonLancerServeur_clicked();
+    void onQTimer_timeout();
 
 private:
     Ui::Serveur *ui;
@@ -66,5 +69,7 @@ private:
     bool zone3Verif;
 
     QString messageValide;
+
+    QTimer *timer;
 };
 #endif // SERVEUR_H
