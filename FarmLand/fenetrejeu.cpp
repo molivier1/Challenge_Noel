@@ -180,8 +180,8 @@ void FenetreJeu::onQTcpSocket_disconnected()
     ui->lineEditAdresse->setEnabled(false);
     ui->spinBoxPort->setEnabled(false);
 
-    zone2 = false;
-    zone3 = false;
+    zone2Item->show();
+    zone3Item->show();
 }
 
 void FenetreJeu::onQTcpSocket_readyRead()
