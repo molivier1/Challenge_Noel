@@ -18,11 +18,7 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     connect(socketFarmLand,&QTcpSocket::disconnected,this,&FenetreJeu::onQTcpSocket_disconnected);
     connect(socketFarmLand,&QTcpSocket::readyRead,this,&FenetreJeu::onQTcpSocket_readyRead);
     connect(socketFarmLand,&QTcpSocket::errorOccurred,this,&FenetreJeu::onQTcpSocket_errorOccured);
-
-    ui->pushButtonNouvelleZone->setStyleSheet("background-position: center;"
-                                              "background : no-repeat;"
-                                              "background-image: url('../FarmLand/plus.png')");
-
+    connect(&player,&QMediaPlayer::playbackStateChanged,this,&FenetreJeu::onQMediaPlayer_playbackStateChanged);
     maScene.setSceneRect(0,0,800,462);
 
     maVue = new QGraphicsViewPerso(this);
@@ -34,15 +30,15 @@ FenetreJeu::FenetreJeu(QWidget *parent)
     maVue->setScene(&maScene);
     maVue->setStyleSheet("background-position: center;"
                          "background : no-repeat;"
-                         "background-image: url('/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/plan.webp')");
+                         "background-image: url('../FarmLand/plan.webp')");
     ui->pushButtonNouvelleZone->setStyleSheet("border-image:url(../FarmLand/plus.png);");
 
-    /*joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/candy.png"));
+    /*joueur = new QGraphicsPixmapItem(QPixmap("../FarmLand/candy.png"));
     joueur->setScale(0.25);
     maScene.addItem(joueur);
     joueur->hide();*/
 
-    joueur = new QGraphicsPixmapItem(QPixmap("/home/USERS/ELEVES/SNIR2022/tperichet/Documents/C++/Challenge_Noel/FarmLand/Gorgious.png"));
+    joueur = new QGraphicsPixmapItem(QPixmap("../FarmLand/Gorgious.png"));
     joueur->setScale(0.25);
     maScene.addItem(joueur);
     joueur->hide();
@@ -244,6 +240,7 @@ void FenetreJeu::onQTcpSocket_readyRead()
                     zone3Item->show();
                 }
                 actualiserRessources();
+                joueurZone1();
                 break;
 
             }
@@ -362,6 +359,23 @@ void FenetreJeu::obtenirCoordonneesCurseur()
     qDebug() << "Coordonnées du curseur de la souris : " << cursorPos.x() << ", " << cursorPos.y();
 }
 
+void FenetreJeu::onQMediaPlayer_playbackStateChanged(QMediaPlayer::PlaybackState newState)
+{
+    QString etat;
+    switch (newState) {
+    case QMediaPlayer::StoppedState :
+        etat="Stopped";
+        break;
+    case QMediaPlayer::PlayingState :
+        etat="Playing";
+        break;
+    case QMediaPlayer::PausedState :
+        etat="Paused";
+        break;
+    }
+    qDebug()<<etat;
+}
+
 void FenetreJeu::onQGraphicsViewPerso_positionSouris(QPoint pos)
 {
 
@@ -378,5 +392,33 @@ void FenetreJeu::actualiserRessources()
     ui->labelValPatate->setText(QString::number(coffre.getPatate()));
     ui->labelValRoche->setText(QString::number(coffre.getRoche()));
     ui->labelValSapin->setText(QString::number(coffre.getSapin()));
+}
+
+void FenetreJeu::joueurZone1()
+{
+
+    QString nomFichier = "../FarmLand/bruitmarchesursable.mp3";
+
+    if (joueur->collidesWithItem(zone2Item))
+    {
+        if (!player.isPlaying())
+        {
+            qDebug() << "Collision détectée avec la zone 2";
+
+            player.setAudioOutput(&sortieAudio);
+            player.setSource(QUrl::fromLocalFile(nomFichier));
+            player.play();
+
+            qDebug() << "Le fichier audio devrait être en train de jouer.";
+        }
+
+    }
+    else
+    {
+        player.stop();
+    }
+
+
+    qDebug() << "Le fichier audio devrait être arrêté.";
 }
 

@@ -11,6 +11,8 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include "QGraphicsViewPerso.h"
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 #define NBRESSOURCES 9
 
@@ -38,7 +40,7 @@ private slots:
     void keyPressEvent(QKeyEvent *event);
 
     void obtenirCoordonneesCurseur();
-
+    void onQMediaPlayer_playbackStateChanged(QMediaPlayer::PlaybackState newState);
     void onQGraphicsViewPerso_positionSouris(QPoint pos);
 
 private:
@@ -52,8 +54,12 @@ private:
     Inventaire coffre;
     const QString ressources[NBRESSOURCES]={"ble,pierre,bois,fer,carotte,bouleau,patate,diamant,sapin"};
     QString message;
+    QString nomFichier;
+    QMediaPlayer player;
+    QAudioOutput sortieAudio;
 
     void actualiserRessources();
+    void joueurZone1();
 
     bool zone2;
     bool zone3;
